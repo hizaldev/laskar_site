@@ -73,7 +73,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3 col-md-6 sol-sm-12">
-                                    <input type="date" class="form-control @error('tgl_lahir') is-invalid @enderror" name="tgl_lahir" value="{{ old('tgl_lahir') }}" id="tgl_lahir" placeholder="">
+                                    <input type="date" class="form-control @error('tgl_lahir') is-invalid @enderror" name="tgl_lahir" value="{{ old('tgl_lahir') }}" id="tgl_lahir" placeholder="dd/mm/yyyy">
                                     @error('tgl_lahir')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -180,7 +180,7 @@
                                     ↻
                                     </button>
                                 </div>
-                                <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha">
+                                <input id="captcha" type="number" class="form-control" placeholder="Enter Captcha" name="captcha">
 
                                 @error('captcha')
                                     <span class="invalid-feedback" role="alert">
@@ -260,18 +260,18 @@
 @push('addon-style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet"> 
+    {{-- <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">  --}}
     
   
-    <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
+    {{-- <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css"> --}}
   
-    <style>
+    {{-- <style>
         .kbw-signature { width: 300px; height: 200px;}
         #sig canvas{
             width: 100% !important;
             height: auto;
         }
-    </style>
+    </style> --}}
 @endpush
 
 @push('addon-script')
@@ -295,7 +295,7 @@
     </script>
 
     {{-- <script type="text/javascript" src="{{ asset('js/jquery.ui.touch-punch.min.js')}}"></script> --}}
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+    {{-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
     <script type="text/javascript">
@@ -305,7 +305,7 @@
             sig.signature('clear');
             $("#signature64").val('');
         });
-    </script>
+    </script> --}}
     <script src="{{ asset('js/reload.captcha.js') }}"></script>       
     <script src="{{ asset('js/register.check.js') }}"></script>       
     {{-- ttd js --}}
