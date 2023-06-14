@@ -1,0 +1,256 @@
+<?php
+
+namespace App\Http\Controllers\Keanggotaan;
+
+use App\Http\Controllers\Constant\ConstantController;
+use App\Http\Controllers\Controller;
+use App\Models\Bank;
+use App\Models\Dpc;
+use App\Models\Dpd;
+use App\Models\Member;
+use App\Models\Religion;
+use App\Models\Size;
+use App\Models\StatusMember;
+use App\Models\TypeBlood;
+use App\Models\Unit;
+use App\Models\User;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Yajra\DataTables\Facades\DataTables;
+
+class AnggotaController extends Controller
+{
+    var $route = 'members';
+    var $path_view = 'keanggotaan.anggota';
+
+    function __construct()
+    {
+        $this->middleware('permission:keanggotaan_anggota-list|permission-create|keanggotaan_anggota-edit|keanggotaan_anggota-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:keanggotaan_anggota-create', ['only' => ['create','store']]);
+        $this->middleware('permission:keanggotaan_anggota-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:keanggotaan_anggota-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:keanggotaan_anggota-show', ['only' => ['show']]);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $data = Member::with(['unit', 'size', 'status', 'dpc', 'dpd'])->get();
+        // dd($data);
+        if(request()->ajax()){
+            return DataTables::of($data)
+            ->editColumn('created_at', function($data){ $formatedDate = $data->created_at != null ?Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y') : null; return $formatedDate; })
+            ->editColumn('tgl_pendaftaran', function($data){$formatedDate = $data->tgl_pendaftaran != null ? Carbon::createFromFormat('Y-m-d H:i:s', $data->tgl_pendaftaran )->format('d-m-Y') : null; return $formatedDate; })
+            ->addColumn('show', function($item){
+                return '
+                
+                    <a class="btn btn-primary btn-sm text-white" href="'.route("$this->route.show", $item->id).'">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                ';
+            })
+            ->addColumn('edit', function($item){
+                return '
+                
+                    <a class="btn btn-success btn-sm text-white" href="'.route("$this->route.edit", $item->id).'">
+                        <i class="fa-solid fa-pencil"></i>
+                    </a>
+                ';
+            })
+            ->addColumn('delete', function($item){
+                return '
+                    <form action="'. route("$this->route.destroy", $item->id).'" method="POST" id="form" class="form-inline" onSubmit="if (confirm(`Apa anda yakin menghapus data ini? data ini mungkin akan berpengaruh pada data transaksi aplikasi`)) run; return false">
+                        '. method_field('delete') . csrf_field().'
+                        <button type="submit" class="btn btn-danger btn-sm text-white">
+                        <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </form>
+                ';
+            })
+            ->addIndexColumn()
+            ->rawColumns(['show','edit', 'delete'])
+            ->make();
+        }
+        //dd($data);
+        ConstantController::logger('-', $this->route.'.index', 'list');
+        return view("$this->path_view.index");
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        ConstantController::logger('-', $this->route.'.create', 'open form create');
+        return view("$this->path_view.create");
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'bank' => 'required|unique:Banks,bank',
+        ]);
+
+        try{
+            $data['bank'] = $request->bank;
+            $data['description'] = $request->description;
+            $create = Member::create($data);
+            ConstantController::logger($create->getOriginal(), $this->route.'.store', 'insert success');
+            ConstantController::successAlert();
+        } catch(Exception $e){
+            ConstantController::logger($e->getMessage(), $this->route.'.store', 'insert error');
+            ConstantController::errorAlert($e->getMessage());
+        }
+
+        return redirect()->route($this->route.'.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $items = Member::findOrFail($id);
+        ConstantController::logger('-', $this->route.'.edit', 'detail id '.$id);
+        return view("$this->path_view.show", [
+            'item'=>$items,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $items = Member::findOrFail($id);
+        $dpd = Dpd::orderBy('dpd', 'asc')->get();
+        $dpc = Dpc::orderBy('dpc', 'asc')->get();
+        $agama = Religion::orderBy('agama','asc')->get();
+        $size = Size::orderBy('ukuran','asc')->get();
+        $type_blood = TypeBlood::orderBy('golongan_darah')->get();
+        $bank = Bank::orderBy('bank','asc')->get();
+        $unit = Unit::orderBy('unit','asc')->get();
+        $status = StatusMember::orderBy('status','asc')->get();
+        ConstantController::logger('-', $this->route.'.edit', 'open form edit');
+        return view("$this->path_view.edit", [
+            'item'=>$items,
+            'dpd'=>$dpd,
+            'dpc'=>$dpc,
+            'agama'=>$agama,
+            'size'=>$size,
+            'type_blood'=>$type_blood,
+            'bank'=>$bank,
+            'unit'=>$unit,
+            'status'=>$status,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'nama_lengkap' => 'required',
+            'nipeg' => 'required',
+            'email' => 'required',
+            'tempat_lahir' => 'required',
+            'jenis_kelamin' => 'required',
+            'no_telpon' => 'required',
+            'alamat' => 'required',
+            'grade' => 'required',
+            'agama' => 'required',
+            'size_id' => 'required',
+            'golongan_darah' => 'required',
+            'dpd_id' => 'required',
+            'dpc_id' => 'required',
+            'bank_id' => 'required',
+            'no_rekening' => 'required',
+            'status_id' => 'required',
+        ]);
+
+        try{
+            $data['unit_id'] = $request->unit_id;
+            $data['golongan_darah'] = $request->golongan_darah;
+            $data['jenis_kelamin'] = $request->jenis_kelamin;
+            $data['nama_lengkap'] = $request->nama_lengkap;
+            $data['alamat'] = $request->alamat;
+            $data['agama'] = $request->agama;
+            $data['tempat_lahir'] = $request->tempat_lahir;
+            $data['no_telpon'] = $request->no_telpon;
+            $data['email'] = $request->email;
+            $data['size_id'] = $request->size_id;
+            $data['nipeg'] = $request->nipeg;
+            $data['grade'] = $request->grade;
+            $data['tgl_lahir'] = $request->tgl_lahir;
+            $data['dpd_id'] = $request->dpd_id;
+            $data['dpc_id'] = $request->dpc_id;
+            $data['status_id'] = $request->status_id;
+            $data['bank_id'] = $request->bank_id;
+            $data['no_rekening'] = $request->no_rekening;
+            $item = Member::findOrFail($id);
+            $item->update($data);
+
+            ConstantController::logger($item->getOriginal(), $this->route.'.update', 'update success');
+            ConstantController::successAlert();
+        } catch(Exception $e){
+            ConstantController::logger($item->getMessage(), $this->route.'.update', 'update error');
+            ConstantController::errorAlert($e->getMessage());
+        }
+
+        return redirect()->route($this->route.'.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $item = Member::findOrFail($id);
+        $item->delete();
+        ConstantController::logger($item->getOriginal(), $this->route.'.delete', 'delete success');
+        ConstantController::successDeleteAlert();
+         return redirect()->route($this->route.'.index');
+    }
+
+    public static function createUser($member){
+        $unit = Unit::where('id', $member->unit_id)->first();
+        $data['user_id'] = $member->id;
+        $data['name'] = $member->nama_lengkap;
+        $data['email'] = $member->email;
+        $data['nipeg'] = $member->nipeg;
+        $data['unit_id'] = $member->unit_id;
+        $data['induk_id'] = $unit != null ? $unit->induk_id : null;
+        $data['dpd_id'] = $member->dpd_id;
+        $data['dpc_id'] = $member->dpc_id;
+        $data['alamat'] = $member->alamat;
+        $data['password'] = bcrypt('P@ssw0rdLaskar');
+        $user = User::create($data);
+        $user->assignRole([3]);
+    }
+}
