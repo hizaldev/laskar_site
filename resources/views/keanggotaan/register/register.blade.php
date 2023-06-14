@@ -142,12 +142,25 @@
                             <div class="form-group mb-3">
                                 <label for="no_telpon">Tanda Tangan Digital <span class="text-danger">*</span></label>
                                 <br>
-                                <center>
+                                {{-- <center>
 
                                     <div id="sig" ontouchmove="event.preventDefault();" ></div>
-                                </center>
+                                </center> --}}
+                                <div id="signature-pad" class="signature-pad">
+                                    <div class="signature-pad--body text-center" style="color:black;">
+                                      <canvas style="border:1px solid black"></canvas>
+                                    </div>
+                                    <div class="signature-pad--footer">
+                                      <div class="signature-pad--actions text-center">
+                                        <div>
+                                          <button type="button" class="btn btn-danger btn-sm" data-action="clear">Hapus TTD</button>
+                                          <button type="button" class="btn btn-success btn-sm" data-action="save-png" >Simpan TTD</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
                                 <br>
-                                <button id="clear" class="btn btn-danger btn-sm">Clear TTD</button>
+                                {{-- <button id="clear" class="btn btn-danger btn-sm">Clear TTD</button> --}}
                                 <textarea id="signature64" name="signed" style="display: none"></textarea>
                             </div>
                             <div class="form-group mb-3">
@@ -295,6 +308,9 @@
     </script>
     <script src="{{ asset('js/reload.captcha.js') }}"></script>       
     <script src="{{ asset('js/register.check.js') }}"></script>       
+    {{-- ttd js --}}
+    <script src="{{ asset('js/signature_pad.js') }}"></script>       
+    <script src="{{ asset('js/app.js') }}"></script>       
     
 
     
