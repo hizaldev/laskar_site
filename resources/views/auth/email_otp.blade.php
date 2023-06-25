@@ -31,8 +31,8 @@
                     <div class="container">
                         <div class="row gx-lg-5 align-items-center">
                             <div class="col-lg-6 mb-5 mb-lg-0">
-                                <div class="d-flex">
-                                    <img src="{{ asset('images/BIG.png') }}" class="rounded float-start" width="250" height="100">
+                                <div class="text-center">
+                                    <img src="{{ asset('images/logo_bulat_laskar.png') }}" class="rounded" width="150" height="150">
                                     {{-- <img src="{{ asset('images/logo_bulat_laskar.png') }}" class="rounded float-end" width="100" height="100"> --}}
                                 </div>
                            
@@ -96,7 +96,7 @@
                                             <div class="text-center">
                                                 <p>Ingin bergabung dengan kami? klik button dibawah ini</p>
                                                 <div class="d-grid">
-                                                    <a href="{{ route('register_members.index') }}" class="btn btn-warning btn-block mb-4"> Ayo, Bergabung dengan kami!!</a>
+                                                    <a href="{{ route('register_members.index') }}" class="btn btn-warning btn-block mb-4"> Saya Ingin Mendaftar</a>
                                                 </div>
                                             </div>
                                         </form>
