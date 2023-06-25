@@ -14,6 +14,9 @@ use App\Models\StatusMember;
 use App\Models\TypeBlood;
 use App\Models\Unit;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+// use Barryvdh\DomPDF\PDF;
+// use Barryvdh\DomPDF\Facade as PDF;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -45,6 +48,21 @@ class AnggotaController extends Controller
             return DataTables::of($data)
             ->editColumn('created_at', function($data){ $formatedDate = $data->created_at != null ?Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y') : null; return $formatedDate; })
             ->editColumn('tgl_pendaftaran', function($data){$formatedDate = $data->tgl_pendaftaran != null ? Carbon::createFromFormat('Y-m-d H:i:s', $data->tgl_pendaftaran )->format('d-m-Y') : null; return $formatedDate; })
+            ->addColumn('print', function($item){
+                return '
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm text-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="'.route("$this->route.PrintUndurDiri", $item->id).'">Pengunduran Diri</a></li>
+                        <li><a class="dropdown-item" href="'.route("$this->route.PrintPendaftaran", $item->id).'">Pendaftaran</a></li>
+                        <li><a class="dropdown-item" href="'.route("$this->route.PrintSuratKuasa", $item->id).'">Surat Kuasa Pemotongan</a></li>
+                        <li><a class="dropdown-item" href="'.route("$this->route.PrintTemplate", $item->id).'">Template Materai</a></li>
+                    </ul>
+                </div>
+                ';
+            })
             ->addColumn('show', function($item){
                 return '
                 
@@ -72,7 +90,7 @@ class AnggotaController extends Controller
                 ';
             })
             ->addIndexColumn()
-            ->rawColumns(['show','edit', 'delete'])
+            ->rawColumns(['print','show','edit', 'delete'])
             ->make();
         }
         //dd($data);
@@ -252,5 +270,53 @@ class AnggotaController extends Controller
         $data['password'] = bcrypt('P@ssw0rdLaskar');
         $user = User::create($data);
         $user->assignRole([3]);
+    }
+
+    public function PrintUndurDiri($id){
+        $member = Member::with(['unit'])->findOrFail($id);
+        $data = [
+            'date' => date('m/d/Y'),
+            'users' => $member
+        ]; 
+            
+        $pdf = Pdf::loadView("$this->path_view.pengunduran_diri", $data);
+     
+        return $pdf->download("Formulir Pengunduran Diri $member->nama_lengkap.pdf");
+    }
+
+    public function PrintPendaftaran($id){
+        $member = Member::with(['unit', 'size'])->findOrFail($id);
+        $data = [
+            'date' => date('m/d/Y'),
+            'users' => $member
+        ]; 
+            
+        $pdf = Pdf::loadView("$this->path_view.pendaftaran", $data);
+     
+        return $pdf->download("Formulir Pendaftaran $member->nama_lengkap.pdf");
+    }
+
+    public function PrintSuratKuasa($id){
+        $member = Member::with(['unit', 'size'])->findOrFail($id);
+        $data = [
+            'date' => date('m/d/Y'),
+            'users' => $member
+        ]; 
+            
+        $pdf = Pdf::loadView("$this->path_view.surat_kuasa", $data);
+     
+        return $pdf->download("Surat Kuasa Pemotongan Iuran Anggota a/n $member->nama_lengkap.pdf");
+    }
+
+    public function PrintTemplate($id){
+        $member = Member::with(['unit', 'size'])->findOrFail($id);
+        $data = [
+            'date' => date('m/d/Y'),
+            'users' => $member
+        ]; 
+            
+        $pdf = Pdf::loadView("$this->path_view.template_materai", $data);
+     
+        return $pdf->download("Surat Kuasa Pemotongan Iuran Anggota a/n $member->nama_lengkap.pdf");
     }
 }

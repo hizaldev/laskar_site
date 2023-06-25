@@ -292,7 +292,7 @@ unset($__errorArgs, $__bag); ?>
                                 <textarea id="signature64" name="signed" style="display: none"></textarea>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="kode_refferal">Kode Refferal</label>
+                                <label for="kode_refferal">NIPEG Pengajak</label>
                                 <input type="text" class="form-control <?php $__errorArgs = ['kode_refferal'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -300,7 +300,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="kode_refferal" id="kode_refferal" placeholder="Masukan Kode Refferal">
+unset($__errorArgs, $__bag); ?>" name="kode_refferal" id="kode_refferal" placeholder="Masukan NIPEG Yang mengajak jika ada">
                                 <?php $__errorArgs = ['kode_refferal'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

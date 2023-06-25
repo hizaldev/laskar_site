@@ -1,8 +1,12 @@
 <nav class="navbar navbar-expand-md navbar-light bg-primary bg-opacity-50 text-white shadow-sm">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        @guest
+            
+        @else
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        @endguest
 
         <div class="collapse navbar-collapse px-4" id="navbarSupportedContent">
 
@@ -12,11 +16,12 @@
                 @guest
                 @else
                     <li>
-                        <a class="nav-link" href="{{ route('home') }}"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                        <a class="nav-link" href="{{ route('home') }}"><i class="fa-solid fa-chart-line"></i> Beranda</a>
                     </li>
                     @canany([
                         'settings_permissions-list',
                         'settings_role-list',
+                        'settings-user-list',
                     ])
                         <li class="nav-item dropdown">
                     
@@ -30,6 +35,9 @@
                                 @endcan
                                 @can('settings_permissions-list')
                                     <a class="dropdown-item" href="{{ route('permisions.index') }}">Permission</a>
+                                @endcan
+                                @can('settings-user-list')
+                                    <a class="dropdown-item" href="{{ route('users.index') }}">User</a>
                                 @endcan
                                
                             </div>

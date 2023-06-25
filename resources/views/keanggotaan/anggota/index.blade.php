@@ -46,6 +46,9 @@
                                         <th> 
                                             <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Statu" data-column="11">
                                         </th>
+                                        <th> 
+                                            
+                                        </th>
                                         @can('keanggotaan_anggota-show')
                                             <th class="py-2"></th>
                                         @endcan
@@ -69,6 +72,7 @@
                                         <th class="py-2">Tgl Masuk</th>
                                         <th class="py-2">Tgl Daftar</th>
                                         <th class="py-2">Status</th>
+                                        <th class="py-2"></th>
                                         @can('keanggotaan_anggota-show')
                                             <th class="py-2"></th>
                                         @endcan
@@ -134,6 +138,13 @@
                 {data: 'created_at', name: 'created_at', defaultContent: ""},
                 {data: 'tgl_pendaftaran', name: 'tgl_pendaftaran', defaultContent: ""},
                 {data: 'status.status', name: 'status.status'},
+                {
+                        data: 'print', 
+                        name: 'print',
+                        orderable: false,
+                        searchable: false,
+                        width: '1%'
+                    },
                 @can('keanggotaan_anggota-show')
                     {
                         data: 'show', 

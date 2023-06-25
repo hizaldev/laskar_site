@@ -61,4 +61,8 @@ class Member extends Model
     public function bank(){
         return $this->belongsTo(Bank::class);
     }
+
+    public function User(){
+        return $this->hasOne(User::class, 'user_id', 'id');
+    }
 }

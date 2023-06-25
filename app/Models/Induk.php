@@ -17,4 +17,8 @@ class Induk extends Model
         'induk',
         'code',
     ];
+
+    public function User(){
+        return $this->hasOne(User::class, 'user_id', 'id');
+    }
 }

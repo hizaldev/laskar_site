@@ -52,4 +52,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function member(){
+        return $this->belongsTo(Member::class);
+    } 
+
+    public function induk(){
+        return $this->belongsTo(Induk::class, 'induk_id', 'id');
+    }
+
+    public function unit(){
+        return $this->belongsTo(Unit::class, 'unit_id', 'id');
+    }
+
+    public function dpd(){
+        return $this->belongsTo(Dpd::class, 'dpd_id', 'id');
+    }
+
+    public function dpc(){
+        return $this->belongsTo(Dpc::class, 'dpc_id', 'id');
+    }
 }

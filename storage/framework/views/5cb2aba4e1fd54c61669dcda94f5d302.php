@@ -1,8 +1,12 @@
 <nav class="navbar navbar-expand-md navbar-light bg-primary bg-opacity-50 text-white shadow-sm">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="<?php echo e(__('Toggle navigation')); ?>">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <?php if(auth()->guard()->guest()): ?>
+            
+        <?php else: ?>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="<?php echo e(__('Toggle navigation')); ?>">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <?php endif; ?>
 
         <div class="collapse navbar-collapse px-4" id="navbarSupportedContent">
 
@@ -12,11 +16,12 @@
                 <?php if(auth()->guard()->guest()): ?>
                 <?php else: ?>
                     <li>
-                        <a class="nav-link" href="<?php echo e(route('home')); ?>"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                        <a class="nav-link" href="<?php echo e(route('home')); ?>"><i class="fa-solid fa-chart-line"></i> Beranda</a>
                     </li>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
                         'settings_permissions-list',
                         'settings_role-list',
+                        'settings-user-list',
                     ])): ?>
                         <li class="nav-item dropdown">
                     
@@ -30,6 +35,9 @@
                                 <?php endif; ?>
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('settings_permissions-list')): ?>
                                     <a class="dropdown-item" href="<?php echo e(route('permisions.index')); ?>">Permission</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('settings-user-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('users.index')); ?>">User</a>
                                 <?php endif; ?>
                                
                             </div>

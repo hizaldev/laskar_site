@@ -16,7 +16,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                    <form method="POST" action="<?php echo e(route('login')); ?>">
+                    <form method="POST" action="<?php echo e(route('authenticate')); ?>">
                         <?php echo csrf_field(); ?>
 
                         <div class="row mb-3">
@@ -30,7 +30,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="email" value="<?php echo e(old('email')); ?>" required autocomplete="email" autofocus>
+unset($__errorArgs, $__bag); ?>" name="email" value="<?php echo e($member->email); ?>" required autocomplete="email" readonly>
 
                                 <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -48,7 +48,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end"><?php echo e(__('Password')); ?></label>
+                            <label for="password" class="col-md-4 col-form-label text-md-end">Kode OTP</label>
 
                             <div class="col-md-6">
                                
@@ -117,18 +117,13 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="row mb-0">
+                           
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     <?php echo e(__('Login')); ?>
 
                                 </button>
-
-                                <?php if(Route::has('password.request')): ?>
-                                    <a class="btn btn-link" href="<?php echo e(route('password.request')); ?>">
-                                        <?php echo e(__('Forgot Your Password?')); ?>
-
-                                    </a>
-                                <?php endif; ?>
+                                
                             </div>
                         </div>
                     </form>

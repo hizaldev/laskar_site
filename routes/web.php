@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthOtpController;
 use App\Http\Controllers\CaptchaValidationController;
 use App\Http\Controllers\Keanggotaan\AnggotaController;
 use App\Http\Controllers\Keanggotaan\ProcessMemberController;
@@ -31,14 +32,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
-});
+    return view('auth.email_otp');
+})->name('root');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('reload-captcha', [CaptchaValidationController::class, 'reloadCaptcha']);
 Route::resource('register_members', RegistrasiController::class);
+Route::post('sign-in', [AuthOtpController::class, 'sendOtp'])->name('sign-in');
+Route::post('authenticate', [AuthOtpController::class, 'authenticate'])->name('authenticate');
 
 
 Route::group(['middleware' => ['auth']], function() {
@@ -61,4 +64,8 @@ Route::group(['middleware' => ['auth']], function() {
     // keanggotaan
     Route::resource('process_members', ProcessMemberController::class);
     Route::resource('members', AnggotaController::class);
+    Route::get('/print_undur_diri/{id}', [AnggotaController::class, 'PrintUndurDiri'])->name('members.PrintUndurDiri');
+    Route::get('/print_pendaftaran/{id}', [AnggotaController::class, 'PrintPendaftaran'])->name('members.PrintPendaftaran');
+    Route::get('/surat_kuasa/{id}', [AnggotaController::class, 'PrintSuratKuasa'])->name('members.PrintSuratKuasa');
+    Route::get('/template_materai/{id}', [AnggotaController::class, 'PrintTemplate'])->name('members.PrintTemplate');
 });

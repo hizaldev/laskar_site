@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Constant;
 use App\Http\Controllers\Controller;
 use App\Models\Logger;
 use Carbon\Carbon;
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -118,20 +119,37 @@ class ConstantController extends Controller
             'receiver' => "$number",
             'type' => 'chat',
             'message' => "$message",
+            'simulate_typing' => 1
          );
          $client = new Client();
-         $response = $client->post($url, [
-               'headers' => [
-                  'Content-Type' => 'application/json', 
-                  'Accept' => 'application/json', 
-                  'Authorization' => 'Bearer '.$key
-               ],
-               'body'    => json_encode($data)
-         ]); 
-
-         $data = (array)json_decode((string)$response->getBody(), true);
-         // dd($data);
-         ConstantController::loggerNonAuth('whatsapp terkirim', 'Module', 'whatsapp notification', $receiver);
+         // dd(json_encode($data)   );
+         try{
+            $response = $client->post($url, [
+                  'headers' => [
+                     'Content-Type' => 'application/json', 
+                     'Accept' => 'application/json', 
+                     'Authorization' => 'Bearer '.$key
+                  ],
+                  'body'    => json_encode($data)
+            ]); 
+            $hasil = (array)json_decode((string)$response->getBody(), true);
+            if($hasil['status'] == 200){
+               // dd($hasil);
+               // dd($hasil['data']['status']);
+               $status = $hasil['data']['status'];
+               $message = $hasil['data']['body'];
+               ConstantController::loggerNonAuth("$message", 'Module', "whatsapp notification $status", $receiver);
+            }else{
+               ConstantController::loggerNonAuth("whatsapp gagal terkirim", 'Module', "whatsapp notification gagal", $receiver);
+            }
+         }catch(Exception $e){
+            $skuList = preg_split('/\r\n|\r|\n/', $e->getMessage());
+            ConstantController::loggerNonAuth("whatsapp gagal terkirim with message : $skuList[1]", 'Module', "whatsapp notification gagal", $receiver);
+            ConstantController::errorAlert("Whatsap gagal mengirim dengan error: $skuList[1]");
+         }
+         
+         
+         
         
     }
 }

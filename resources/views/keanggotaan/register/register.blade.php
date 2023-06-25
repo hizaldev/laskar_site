@@ -164,8 +164,8 @@
                                 <textarea id="signature64" name="signed" style="display: none"></textarea>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="kode_refferal">Kode Refferal</label>
-                                <input type="text" class="form-control @error('kode_refferal') is-invalid @enderror" name="kode_refferal" id="kode_refferal" placeholder="Masukan Kode Refferal">
+                                <label for="kode_refferal">NIPEG Pengajak</label>
+                                <input type="text" class="form-control @error('kode_refferal') is-invalid @enderror" name="kode_refferal" id="kode_refferal" placeholder="Masukan NIPEG Yang mengajak jika ada">
                                 @error('kode_refferal')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
