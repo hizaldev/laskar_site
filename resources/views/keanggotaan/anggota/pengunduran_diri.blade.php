@@ -63,7 +63,11 @@
         <tr>
             <td style="width: 50%">
                 <p style="font-size: 12px">Hormat Saya,</p>
-                <img src="{{ storage_path('app/public/assets/digsign/'.$users->sign) }}" style="height: 80px;width:150px;">
+                @if ($users->sign != null || strlen($users->sign) > 0 || substr($users->sign, -4) == '.png')
+                    <img src="{{ storage_path('app/public/assets/digsign/'.$users->sign) }}" style="height: 80px;width:150px;">
+                @else
+                    <br><br><br>
+                @endif
                 <p style="font-size: 12px">{{$users->nama_lengkap}}</p>
             </td>
         </tr>

@@ -34,6 +34,7 @@ class AnggotaController extends Controller
         $this->middleware('permission:keanggotaan_anggota-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:keanggotaan_anggota-delete', ['only' => ['destroy']]);
         $this->middleware('permission:keanggotaan_anggota-show', ['only' => ['show']]);
+        $this->middleware('permission:keanggotaan_anggota-print', ['only' => ['PrintUndurDiri','PrintPendaftaran','PrintSuratKuasa','PrintTemplate']]);
     }
     /**
      * Display a listing of the resource.
@@ -274,6 +275,8 @@ class AnggotaController extends Controller
 
     public function PrintUndurDiri($id){
         $member = Member::with(['unit'])->findOrFail($id);
+        // dd(asset('test'));
+        // dd(storage_path());
         $data = [
             'date' => date('m/d/Y'),
             'users' => $member

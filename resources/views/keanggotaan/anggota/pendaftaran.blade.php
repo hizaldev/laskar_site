@@ -48,11 +48,17 @@
   </style>
 <body>
     <header>
-        <img src="{{ public_path('images/header.png') }}" style="height: 150px; width:100%; object-fit: cover;">
+        {{-- production --}}
+        <img src="{{ asset('images/header.png') }}" style="height: 150px; width:100%; object-fit: cover;">
+        {{-- development --}}
+        {{-- <img src="{{ public_path('images/header.png') }}" style="height: 150px; width:100%; object-fit: cover;"> --}}
     </header>
 
     <footer>
-        <img src="{{ public_path('images/footer.png') }}" style="height: 545px; width:100%; object-fit: cover;">
+        {{-- production --}}
+        <img src="{{ asset('images/footer.png') }}" style="height: 545px; width:100%; object-fit: cover;">
+        {{-- development  --}}
+        {{-- <img src="{{ public_Path('images/footer.png') }}" style="height: 545px; width:100%; object-fit: cover;"> --}}
     </footer>
     <main>
         <p class="text-center" style="font-size: 16px; font-weight:bold">FORMULIR PENDAFTARAN ANGGOTA<br>LASKAR PLN
@@ -154,7 +160,11 @@
                 <td style="width: 50%">
                     <p style="font-size: 12px">......................, {{$users->tgl_pendaftaran}}</p>
                     <p style="font-size: 12px">Hormat saya,</p>
-                    <img src="{{ storage_path('app/public/assets/digsign/'.$users->sign) }}" style="height: 80px;width:150px;">
+                    @if ($users->sign != null || strlen($users->sign) > 0 || substr($users->sign, -4) == '.png')
+                        <img src="{{ storage_path('app/public/assets/digsign/'.$users->sign) }}" style="height: 80px;width:150px;">
+                    @else
+                        <br><br><br>
+                    @endif
                     <p style="font-size: 12px">{{$users->nama_lengkap}}</p>
                 </td>
             </tr>
