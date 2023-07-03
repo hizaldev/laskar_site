@@ -37,7 +37,7 @@
                                 </div>
                            
                                 <h1 class="my-5 display-3 fw-bold ls-tight text-white">
-                                    <span class="text-dark">Laskar PLN</span><br>
+                                    <span class="text-danger">Laskar PLN</span><br>
                                     Modern, Mandiri, Berintegritas <br />
                                 
                                 </h1>

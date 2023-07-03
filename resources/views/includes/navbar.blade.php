@@ -109,6 +109,20 @@
                             </div>
                         </li>
                     @endcan
+                    @canany([
+                        'pemilu_evote-list',
+                    ])
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fa-solid fa-user-check"></i> Evote
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                @can('pemilu_evote-list')
+                                    <a class="dropdown-item" href="{{ route('evotes.index') }}">Pemilu Laskar</a>
+                                @endcan
+                            </div>
+                        </li>
+                    @endcan
                 @endguest
             </ul>
         </div>

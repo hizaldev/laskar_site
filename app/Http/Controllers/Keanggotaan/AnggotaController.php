@@ -322,4 +322,10 @@ class AnggotaController extends Controller
      
         return $pdf->download("Surat Kuasa Pemotongan Iuran Anggota a/n $member->nama_lengkap.pdf");
     }
+
+    public function getAnggota()
+    {
+        $members = Member::where('nama_lengkap', 'LIKE', '%'. request()->get('q'). '%')->get(); 
+        return response()->json($members);
+    }
 }

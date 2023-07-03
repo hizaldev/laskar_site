@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthOtpController;
 use App\Http\Controllers\CaptchaValidationController;
+use App\Http\Controllers\Evote\ElectionController;
+use App\Http\Controllers\Evote\VoterController;
 use App\Http\Controllers\Keanggotaan\AnggotaController;
 use App\Http\Controllers\Keanggotaan\ProcessMemberController;
 use App\Http\Controllers\Keanggotaan\RegistrasiController;
@@ -68,4 +70,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/print_pendaftaran/{id}', [AnggotaController::class, 'PrintPendaftaran'])->name('members.PrintPendaftaran');
     Route::get('/surat_kuasa/{id}', [AnggotaController::class, 'PrintSuratKuasa'])->name('members.PrintSuratKuasa');
     Route::get('/template_materai/{id}', [AnggotaController::class, 'PrintTemplate'])->name('members.PrintTemplate');
+    Route::get('/get_members', [AnggotaController::class, 'getAnggota'])->name('members.getMembers');
+
+    // pemilu
+    Route::resource('evotes', ElectionController::class);
+    Route::get('/resendInvitation/{id}', [ElectionController::class, 'ResendInvitation'])->name('evotes.ResendInvitation');
+
+    // Route::get('/resendNotification/{voter}', [VoterController::class, 'resendNotification']);
+
 });
