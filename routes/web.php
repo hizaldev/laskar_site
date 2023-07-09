@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('auth.email_otp');
+    // return view('evote.election.get_vote');
 })->name('root');
 
 Auth::routes();
@@ -44,6 +45,9 @@ Route::get('reload-captcha', [CaptchaValidationController::class, 'reloadCaptcha
 Route::resource('register_members', RegistrasiController::class);
 Route::post('sign-in', [AuthOtpController::class, 'sendOtp'])->name('sign-in');
 Route::post('authenticate', [AuthOtpController::class, 'authenticate'])->name('authenticate');
+Route::get('/evote/{id}', [ElectionController::class, 'CollectVote'])->name('evotes.CollectVote');
+Route::post('store_vote', [ElectionController::class, 'store_vote'])->name('evotes.store_vote');
+
 
 
 Route::group(['middleware' => ['auth']], function() {
@@ -51,6 +55,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('permisions', PermissionController::class);
     Route::resource('users', UserController::class);
     
+    // Dashboard
+    Route::get('/dashboard_ellection', [ElectionController::class, 'dashboardEvote'])->name('evotes.dashboard_evote');
 
     // Master
     Route::resource('dpd', DpdController::class);
@@ -75,6 +81,9 @@ Route::group(['middleware' => ['auth']], function() {
     // pemilu
     Route::resource('evotes', ElectionController::class);
     Route::get('/resendInvitation/{id}', [ElectionController::class, 'ResendInvitation'])->name('evotes.ResendInvitation');
+    Route::delete('/destro_voter/{id}', [ElectionController::class, 'destroyVoters'])->name('evotes.destroyVoters');
+    Route::put('/update_candidate/{id}', [ElectionController::class, 'update_candidate'])->name('evotes.update_candidate');
+    Route::post('store_candidate', [ElectionController::class, 'store_candidate'])->name('evotes.store_candidate');
 
     // Route::get('/resendNotification/{voter}', [VoterController::class, 'resendNotification']);
 

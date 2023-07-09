@@ -20,4 +20,12 @@ class Vote extends Model
         'tgl_vote_mulai',
         'tgl_vote_berakhir',
     ];
+
+    public function voter(){
+        return $this->hasMany(Voter::class, 'vote_id', 'id');
+    }
+
+    public function vote_counter(){
+        return $this->hasMany(VoteCounter::class, 'vote_id', 'id');
+    }
 }

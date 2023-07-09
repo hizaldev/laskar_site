@@ -18,6 +18,17 @@
                     <li>
                         <a class="nav-link" href="<?php echo e(route('home')); ?>"><i class="fa-solid fa-chart-line"></i> Beranda</a>
                     </li>
+                    <li class="nav-item dropdown">
+                    
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <i class="fa-solid fa-chart-simple"></i> Dashboard
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="<?php echo e(route('evotes.dashboard_evote')); ?>">Dashboard Evote</a>
+                           
+                        </div>
+                    </li>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
                         'settings_permissions-list',
                         'settings_role-list',

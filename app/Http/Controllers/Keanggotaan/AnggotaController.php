@@ -47,8 +47,8 @@ class AnggotaController extends Controller
         // dd($data);
         if(request()->ajax()){
             return DataTables::of($data)
-            ->editColumn('created_at', function($data){ $formatedDate = $data->created_at != null ?Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y') : null; return $formatedDate; })
-            ->editColumn('tgl_pendaftaran', function($data){$formatedDate = $data->tgl_pendaftaran != null ? Carbon::createFromFormat('Y-m-d H:i:s', $data->tgl_pendaftaran )->format('d-m-Y') : null; return $formatedDate; })
+            // ->editColumn('created_at', function($data){ $formatedDate = $data->created_at != null ?Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y') : null; return $formatedDate; })
+            // ->editColumn('tgl_pendaftaran', function($data){$formatedDate = $data->tgl_pendaftaran != null ? Carbon::createFromFormat('Y-m-d H:i:s', $data->tgl_pendaftaran )->format('d-m-Y') : null; return $formatedDate; })
             ->addColumn('print', function($item){
                 return '
                 <div class="dropdown">

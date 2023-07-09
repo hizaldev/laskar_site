@@ -28,7 +28,32 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    @foreach ( $candidate as $candidates )
+                                        <div class="col-md-3">
+                                            <div class="card h-100">
+                                                <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <p class="text-muted">
+                                                        <h4 style="overflow: hidden;
+                                                        text-overflow: ellipsis;
+                                                        display: -webkit-box;
+                                                        -webkit-line-clamp: 2; /* number of lines to show */
+                                                                line-clamp: 2;
+                                                        -webkit-box-orient: vertical;">{{$candidates->nama_lengkap}}</h4>
+                                                        <div class="card-text fw-semibold">Visi</div>
+                                                        {{$candidates->visi}}
+                                                        <div class="card-text fw-semibold">Misi</div>
+                                                        {{$candidates->misi}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            {{-- <div class="col-md-3">
                                 <div class="card-group">
                                     @foreach ( $candidate as $candidates )
                                         <div class="card">
@@ -51,7 +76,7 @@
                                         </div>
                                     @endforeach
                                   </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -61,42 +86,41 @@
                     <div class="card-header"><strong>Peserta E-vote</strong></div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <div class="table-responsive">
-                                <table id="example" class="table table-sm table-bordered table-hover w-100 table table-striped border datatable">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th> 
-                                                <input type="text" class="form-control filter-input form-control-sm" placeholder="Search No Anggota" data-column="1">
-                                            </th>
-                                            <th> 
-                                                <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Nama Lengkap" data-column="2">
-                                            </th>
-                                            <th> 
-                                                <input type="text" class="form-control filter-input form-control-sm" placeholder="Search No Telp / Wa" data-column="3">
-                                            </th>
-                                            <th> 
-                                                <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Status" data-column="4">
-                                            </th>
-                                            <th> 
-                                            </th>
-                                            <th> 
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th class="py-2">#</th>
-                                            <th class="py-2">No Anggota</th>
-                                            <th class="py-2">Nama Lengkap</th>
-                                            <th class="py-2">No Telp / Wa</th>
-                                            <th class="py-2">Status Notifikasi</th>
-                                            <th class="py-2">Waktu Kirim</th>
-                                            <th class="py-2"></th>
-                                        </tr>
-                                        
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
+                            <table id="example" class="table table-sm table-bordered table-hover w-100 table table-striped border datatable">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th> 
+                                            <input type="text" class="form-control filter-input form-control-sm" placeholder="Search No Anggota" data-column="1">
+                                        </th>
+                                        <th> 
+                                            <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Nama Lengkap" data-column="2">
+                                        </th>
+                                        <th> 
+                                            <input type="text" class="form-control filter-input form-control-sm" placeholder="Search No Telp / Wa" data-column="3">
+                                        </th>
+                                        <th> 
+                                            <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Status" data-column="4">
+                                        </th>
+                                        <th> 
+                                        </th>
+                                        <th> 
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="py-2">#</th>
+                                        <th class="py-2">No Anggota</th>
+                                        <th class="py-2">Nama Lengkap</th>
+                                        <th class="py-2">No Telp / Wa</th>
+                                        <th class="py-2">Status Notifikasi</th>
+                                        <th class="py-2">Waktu Kirim</th>
+                                        <th class="py-2">Status Hak Pilih</th>
+                                        <th class="py-2"></th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -139,7 +163,8 @@
                 {data: 'nama_lengkap', name: 'nama_lengkap'},
                 {data: 'no_telp', name: 'no_telp'},
                 {data: 'status_undangan', name: 'status_undangan'},
-                {data: 'tgl_kirim', name: 'tgl_kirim'},
+                {data: 'waktu_kirim', name: 'waktu_kirim'},
+                {data: 'status_pilih', name: 'status_pilih'},
                 {
                         data: 'sendWhatsapp', 
                         name: 'sendWhatsapp',
@@ -149,6 +174,16 @@
                 },
                 
             ],
+            createdRow : 
+                function (row, data, index) {
+                    if ( data['status_undangan'] == 'Belum Terkirim' ) {
+                        $('td', row).eq(4).addClass('bg-danger text-white');
+                    } else if(data['status_undangan'] == 'Terkirim') {
+                        $('td', row).eq(4).addClass('bg-success text-white');
+                    }else{
+                        $('td', row).eq(4).addClass('bg-primary text-white');
+                    }
+                },
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100,  "All"]],
             buttons : [ 
                 {

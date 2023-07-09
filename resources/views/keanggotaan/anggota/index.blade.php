@@ -37,14 +37,14 @@
                                         <th> 
                                             <input type="text" class="form-control filter-input form-control-sm" placeholder="Search DPC" data-column="8">
                                         </th>
-                                        <th> 
+                                        {{-- <th> 
                                             
                                         </th>
                                         <th> 
                                             
-                                        </th>
+                                        </th> --}}
                                         <th> 
-                                            <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Statu" data-column="11">
+                                            <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Status" data-column="11">
                                         </th>
                                         @can('keanggotaan_anggota-print')
                                             <th class="py-2"></th>
@@ -69,8 +69,8 @@
                                         <th class="py-2">Unit</th>
                                         <th class="py-2">DPD</th>
                                         <th class="py-2">DPC</th>
-                                        <th class="py-2">Tgl Masuk</th>
-                                        <th class="py-2">Tgl Daftar</th>
+                                        {{-- <th class="py-2">Tgl Masuk</th>
+                                        <th class="py-2">Tgl Daftar</th> --}}
                                         <th class="py-2">Status</th>
                                         @can('keanggotaan_anggota-print')
                                             <th class="py-2"></th>
@@ -137,8 +137,8 @@
                 {data: 'unit.unit', name: 'unit.unit'},
                 {data: 'dpd.dpd', name: 'dpd.dpd', defaultContent: ""},
                 {data: 'dpc.dpc', name: 'dpc.dpc', defaultContent: ""},
-                {data: 'created_at', name: 'created_at', defaultContent: ""},
-                {data: 'tgl_pendaftaran', name: 'tgl_pendaftaran', defaultContent: ""},
+                // {data: 'created_at', name: 'created_at', defaultContent: ""},
+                // {data: 'tgl_pendaftaran', name: 'tgl_pendaftaran', defaultContent: ""},
                 {data: 'status.status', name: 'status.status'},
                 @can('keanggotaan_anggota-print')
                     {

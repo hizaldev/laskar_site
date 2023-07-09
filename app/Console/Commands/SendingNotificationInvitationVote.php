@@ -45,7 +45,7 @@ class SendingNotificationInvitationVote extends Command
             $message .= "Nama agenda pemilu: $election->judul_pemilihan \n";
             $message .= "Waktu pelaksanaan pemilu : $election->tgl_vote_mulai s/d $election->tgl_vote_berakhir \n";
             $message .= "untuk menggunakan hak pilih anda silahkan buka atau copy alamat link di bawah ini \n";
-            $message .= "https://laskar_site.test/evote/$voter->id \n";
+            $message .= url('evote/'.$voter->id)."\n";
             $message .= "dan jangan lupa saat sudah memilih masukan sekuriti code ini *$voter->pass_key* sebagai validasi anda adalah pemilih yang sah. \n";
             $message .= "mari sukseskan agenda pemilu LASKAR PLN melalui aplikasi E-vote. \n";
             $message .= "*LASKAR PLN* \n";

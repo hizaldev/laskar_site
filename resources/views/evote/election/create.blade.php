@@ -3,7 +3,7 @@
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="container-fluid px-4">
-        <form action="{{ route('evotes.store')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('evotes.store_vote')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 @if ($errors->any())

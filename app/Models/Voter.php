@@ -25,4 +25,12 @@ class Voter extends Model
         'status_undangan',
         'tgl_kirim',
     ];
+
+    public function vote(){
+        return $this->belongsTo(Vote::class);
+    }
+
+    public function vote_counter(){
+        return $this->hasOne(VoteCounter::class, 'voter_id', 'id');
+    }
 }

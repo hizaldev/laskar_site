@@ -23,6 +23,12 @@
                                         </th>
                                         <th> 
                                         </th>
+                                        <th> 
+                                        </th>
+                                        <th> 
+                                        </th>
+                                        <th> 
+                                        </th>
                                         @can('pemilu_evote-show')
                                             <th class="py-2"></th>
                                         @endcan
@@ -39,6 +45,9 @@
                                         <th class="py-2">Status</th>
                                         <th class="py-2">Tgl Mulai</th>
                                         <th class="py-2">Tgl Berakhir</th>
+                                        <th class="py-2">Pemilih</th>
+                                        <th class="py-2">Sdh memilih</th>
+                                        <th class="py-2">Blm memilih</th>
                                         @can('pemilu_evote-show')
                                             <th class="py-2"></th>
                                         @endcan
@@ -97,6 +106,9 @@
                 {data: 'status', name: 'status'},
                 {data: 'tgl_vote_mulai', name: 'tgl_vote_mulai'},
                 {data: 'tgl_vote_berakhir', name: 'tgl_vote_berakhir'},
+                {data: 'voter', name: 'voter'},
+                {data: 'has_vote', name: 'has_vote'},
+                {data: 'vote_counter', name: 'vote_counter'},
                 @can('pemilu_evote-show')
                     {
                         data: 'show', 
