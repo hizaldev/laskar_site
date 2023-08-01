@@ -28,7 +28,7 @@
                         @error('captcha')
                             <div class="alert alert-danger mt-1 mb-3">{{ $message }} wrong</div>
                         @enderror
-                        <form action="{{ route('register_members.store')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('register_members.store')}}" id="formRegister" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="nama_lengkap">Nama Lengkap <span class="text-danger">*</span></label>
@@ -241,7 +241,7 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Saya Tidak Setuju</button>
-                                        <button type="submit" class="btn btn-primary">Saya Setuju mendaftar sebagai anggota Laskar PLN</button>
+                                        <button type="submit" onclick="this.disabled=true;this.form.submit();this.value='Submiting...';" class="btn btn-primary">Saya Setuju mendaftar sebagai anggota Laskar PLN</button>
                                         </div>
                                     </div>
                                     </div>

@@ -18,6 +18,10 @@
                     <li>
                         <a class="nav-link" href="{{ route('home') }}"><i class="fa-solid fa-chart-line"></i> Beranda</a>
                     </li>
+                    @canany([
+                        'dashboard-dashboard_anggota_show',
+                        'dashboard-dashboard_evote_show',
+                    ])
                     <li class="nav-item dropdown">
                     
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -25,14 +29,21 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('evotes.dashboard_evote') }}">Dashboard Evote</a>
+                            @can('dashboard-dashboard_anggota_show')
+                                <a class="dropdown-item" href="{{ route('members.dashboard_laskar') }}">Dashboard Laskar</a>
+                            @endcan
+                            @can('dashboard-dashboard_evote_show')
+                                <a class="dropdown-item" href="{{ route('evotes.dashboard_evote') }}">Dashboard Evote</a>
+                            @endcan
                            
                         </div>
                     </li>
+                    @endcan
                     @canany([
                         'settings_permissions-list',
                         'settings_role-list',
                         'settings-user-list',
+                        'settings_whatsapp_group-list',
                     ])
                         <li class="nav-item dropdown">
                     
@@ -49,6 +60,9 @@
                                 @endcan
                                 @can('settings-user-list')
                                     <a class="dropdown-item" href="{{ route('users.index') }}">User</a>
+                                @endcan
+                                @can('settings_whatsapp_group-list')
+                                    <a class="dropdown-item" href="{{ route('whatsapp_groups.index') }}">Whatsapp Group</a>
                                 @endcan
                                
                             </div>
@@ -102,6 +116,29 @@
                         </li>
                     @endcan
                     @canany([
+                        'content_management_links-list',
+                        'content_management_news_category-list',
+                        'content_management_news-list',
+                    ])
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fa-solid fa-folder-open"></i> CMS
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                @can('content_management_links-list')
+                                    <a class="dropdown-item" href="{{ route('links.index') }}">Management Link</a>
+                                @endcan
+                                @can('content_management_news_category-list')
+                                    <a class="dropdown-item" href="{{ route('news_category.index') }}">Kategori Berita</a>
+                                @endcan
+                                @can('content_management_news-list')
+                                    <a class="dropdown-item" href="{{ route('news.index') }}">Berita Laskar</a>
+                                @endcan
+                            </div>
+
+                        </li>
+                    @endcan
+                    @canany([
                         'keanggotaan_anggota-list',
                         'keanggotaan_proses_daftar-list',
                     ])
@@ -130,6 +167,20 @@
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 @can('pemilu_evote-list')
                                     <a class="dropdown-item" href="{{ route('evotes.index') }}">Pemilu Laskar</a>
+                                @endcan
+                            </div>
+                        </li>
+                    @endcan
+                    @canany([
+                        'report-anggota',
+                    ])
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fa-solid fa-user-check"></i> Report Anggota
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                @can('report-anggota')
+                                    <a class="dropdown-item" href="{{ route('exportMember') }}">Export Anggota</a>
                                 @endcan
                             </div>
                         </li>

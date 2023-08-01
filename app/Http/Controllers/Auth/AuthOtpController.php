@@ -38,10 +38,10 @@ class AuthOtpController extends Controller
             $message = "[LASKAR PLN Virtual Assistant]\n\nHai, $member->nama_lengkap\nBerikut merupakan kode OTP anda *$otp*, tolong untuk tidak membagikan kode ini ke orang lain, bijaklah dalam menggunakan dan menjaga data pribadi anda.\n\n\n\nSalam hangat\n*Laskar PLN*";
             // ConstantController::sendMessageWhatssap($message, $reciver);
             // start
-                $url = env('WHATSAPP_GATEWAY_URL');
+                $url = env('WHATSAPP_GATEWAY_URL')."/messages";
                 $key = env('WHATSAPP_GATEWAY_API_KEY');
                 $device = env('WHATSAPP_GATEWAY_DEVICE');
-    
+                // dd($url);
                 $client = new Client();
                 $noCheck = Str::substr($member->no_telpon, 0, 2);
                 if($noCheck == '08'){
@@ -84,9 +84,10 @@ class AuthOtpController extends Controller
                     ConstantController::loggerNonAuth("whatsapp gagal terkirim", 'Module', "whatsapp notification gagal", $member->no_telpon);
                 }
                 }catch(Exception $e){
-                    $skuList = preg_split('/\r\n|\r|\n/', $e->getMessage());
-                    ConstantController::loggerNonAuth("whatsapp gagal terkirim with message : $skuList[1]", 'Module', "whatsapp notification gagal", $member->no_telpon);
-                    ConstantController::errorAlert("Whatsap gagal mengirim dengan error: $skuList[1]");
+                    // $skuList = preg_split('/\r\n|\r|\n/', $e->getMessage());
+                    // ConstantController::loggerNonAuth("whatsapp gagal terkirim with message : $skuList[1]", 'Module', "whatsapp notification gagal", $member->no_telpon);
+                    // ConstantController::errorAlert("Whatsap gagal mengirim dengan error: $skuList[1]");
+                    ConstantController::errorAlert($e->getMessage());
                     return view('auth.email_otp');
                 }
             // end

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Keanggotaan;
 
+use App\Exports\AnggotaExport;
 use App\Http\Controllers\Constant\ConstantController;
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
@@ -20,7 +21,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AnggotaController extends Controller
 {
@@ -34,6 +37,7 @@ class AnggotaController extends Controller
         $this->middleware('permission:keanggotaan_anggota-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:keanggotaan_anggota-delete', ['only' => ['destroy']]);
         $this->middleware('permission:keanggotaan_anggota-show', ['only' => ['show']]);
+        $this->middleware('permission:dashboard-dashboard_anggota_show', ['only' => ['dashboardlaskar']]);
         $this->middleware('permission:keanggotaan_anggota-print', ['only' => ['PrintUndurDiri','PrintPendaftaran','PrintSuratKuasa','PrintTemplate']]);
     }
     /**
@@ -328,4 +332,67 @@ class AnggotaController extends Controller
         $members = Member::where('nama_lengkap', 'LIKE', '%'. request()->get('q'). '%')->get(); 
         return response()->json($members);
     }
+
+    public function export() 
+    {   
+        $now = Carbon::now();
+        return Excel::download(new AnggotaExport, "Export Data Anggota Per $now.xlsx");
+    }
+
+    // start dashboard
+
+        public function dashboardlaskar(Request $request){
+            $member = Member::all();
+            $sebaranAnggota = $member->where('status_id', '994f84dc-e703-4a2e-9df2-c49571f31498')->count();
+            $anggotaPensiun = $member->where('status_id', '994f863f-8d04-42d6-afd5-1bcc7e11a083')->count();
+            $sebaranlokasiAnggota = DB::table('members')
+            ->select('dpc','dpc_id', DB::raw('count(*) as total'))
+            ->leftjoin('dpc', function ($join) {
+                $join->on('members.dpc_id', '=', 'dpc.id')
+                ->whereNull('dpc.deleted_at');
+            })
+            ->groupBy('members.dpc_id')
+            ->where('members.status_id', '994f84dc-e703-4a2e-9df2-c49571f31498')
+            ->whereNull('members.deleted_at')
+            ->get();
+
+            $sebaranunitAnggota = DB::table('members')
+            ->select('unit','unit_id', DB::raw('count(*) as total'))
+            ->leftjoin('units', function ($join) {
+                $join->on('members.unit_id', '=', 'units.id')
+                ->whereNull('units.deleted_at');
+            })
+            ->groupBy('members.unit_id')
+            ->where('members.status_id', '994f84dc-e703-4a2e-9df2-c49571f31498')
+            ->whereNull('members.deleted_at')
+            ->get();
+            // dd($sebaranunitAnggota);
+
+            // $sebaranunitAnggota->toSql();
+
+            $sebaranUmur = DB::select("
+                select 
+                    count(if(umur < 21,1,null)) as 'bawah_dua_satu', 
+                    count(if(umur between 21 and 29,1,null)) as 'dua_satu_to_dua_sembilan',
+                    count(if(umur between 30 and 40,1,null)) as 'tiga_puluh_to_empat_puluh',
+                    count(if(umur between 41 and 55,1,null)) as 'empat_satu_to_lima_lima',
+                    count(if(umur = 56,1,null)) as 'lima_puluh_enam',
+                    count(if(umur > 56,1,null)) as 'atas_lima_puluh_enam'
+                from(
+                    select nama_lengkap , tgl_lahir, timestampdiff(year, tgl_lahir, curdate()) as umur 
+                    from members
+                    where status_id = '994f84dc-e703-4a2e-9df2-c49571f31498'
+                ) as dummy_table
+            ");
+            // dd($sebaranlokasiAnggota);
+            return view("$this->path_view.dashboard", [
+                'sebaran_anggota'=>$sebaranAnggota,
+                'anggota_pensiun'=>$anggotaPensiun,
+                'sebaranUmur'=>$sebaranUmur,
+                'sebaran_dpc_anggota'=>$sebaranlokasiAnggota,
+                'sebaran_unit_anggota'=>$sebaranunitAnggota,
+            ]); 
+        }
+
+    // end dashboard
 }

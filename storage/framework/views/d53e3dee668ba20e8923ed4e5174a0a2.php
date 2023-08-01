@@ -33,7 +33,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                        <form action="<?php echo e(route('register_members.store')); ?>" method="POST" enctype="multipart/form-data">
+                        <form action="<?php echo e(route('register_members.store')); ?>" id="formRegister" method="POST" enctype="multipart/form-data">
                             <?php echo csrf_field(); ?>
                             <div class="form-group mb-3">
                                 <label for="nama_lengkap">Nama Lengkap <span class="text-danger">*</span></label>
@@ -390,7 +390,7 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Saya Tidak Setuju</button>
-                                        <button type="submit" class="btn btn-primary">Saya Setuju mendaftar sebagai anggota Laskar PLN</button>
+                                        <button type="submit" onclick="this.disabled=true;this.form.submit();this.value='Submiting...';" class="btn btn-primary">Saya Setuju mendaftar sebagai anggota Laskar PLN</button>
                                         </div>
                                     </div>
                                     </div>

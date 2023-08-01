@@ -18,6 +18,10 @@
                     <li>
                         <a class="nav-link" href="<?php echo e(route('home')); ?>"><i class="fa-solid fa-chart-line"></i> Beranda</a>
                     </li>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
+                        'dashboard-dashboard_anggota_show',
+                        'dashboard-dashboard_evote_show',
+                    ])): ?>
                     <li class="nav-item dropdown">
                     
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -25,14 +29,21 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="<?php echo e(route('evotes.dashboard_evote')); ?>">Dashboard Evote</a>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dashboard-dashboard_anggota_show')): ?>
+                                <a class="dropdown-item" href="<?php echo e(route('members.dashboard_laskar')); ?>">Dashboard Laskar</a>
+                            <?php endif; ?>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dashboard-dashboard_evote_show')): ?>
+                                <a class="dropdown-item" href="<?php echo e(route('evotes.dashboard_evote')); ?>">Dashboard Evote</a>
+                            <?php endif; ?>
                            
                         </div>
                     </li>
+                    <?php endif; ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
                         'settings_permissions-list',
                         'settings_role-list',
                         'settings-user-list',
+                        'settings_whatsapp_group-list',
                     ])): ?>
                         <li class="nav-item dropdown">
                     
@@ -49,6 +60,9 @@
                                 <?php endif; ?>
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('settings-user-list')): ?>
                                     <a class="dropdown-item" href="<?php echo e(route('users.index')); ?>">User</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('settings_whatsapp_group-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('whatsapp_groups.index')); ?>">Whatsapp Group</a>
                                 <?php endif; ?>
                                
                             </div>
@@ -102,6 +116,29 @@
                         </li>
                     <?php endif; ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
+                        'content_management_links-list',
+                        'content_management_news_category-list',
+                        'content_management_news-list',
+                    ])): ?>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fa-solid fa-folder-open"></i> CMS
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('content_management_links-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('links.index')); ?>">Management Link</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('content_management_news_category-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('news_category.index')); ?>">Kategori Berita</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('content_management_news-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('news.index')); ?>">Berita Laskar</a>
+                                <?php endif; ?>
+                            </div>
+
+                        </li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
                         'keanggotaan_anggota-list',
                         'keanggotaan_proses_daftar-list',
                     ])): ?>
@@ -134,6 +171,16 @@
                             </div>
                         </li>
                     <?php endif; ?>
+
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fa-solid fa-user-check"></i> Report Anggota
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="<?php echo e(route('exportMember')); ?>">Export Anggota</a>
+                            </div>
+                        </li>
+    
                 <?php endif; ?>
             </ul>
         </div>

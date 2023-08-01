@@ -35,14 +35,9 @@
                                         <th> 
                                             <input type="text" class="form-control filter-input form-control-sm" placeholder="Search DPC" data-column="8">
                                         </th>
+                                        
                                         <th> 
-                                            
-                                        </th>
-                                        <th> 
-                                            
-                                        </th>
-                                        <th> 
-                                            <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Statu" data-column="11">
+                                            <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Status" data-column="11">
                                         </th>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('keanggotaan_anggota-print')): ?>
                                             <th class="py-2"></th>
@@ -67,8 +62,7 @@
                                         <th class="py-2">Unit</th>
                                         <th class="py-2">DPD</th>
                                         <th class="py-2">DPC</th>
-                                        <th class="py-2">Tgl Masuk</th>
-                                        <th class="py-2">Tgl Daftar</th>
+                                        
                                         <th class="py-2">Status</th>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('keanggotaan_anggota-print')): ?>
                                             <th class="py-2"></th>
@@ -135,8 +129,8 @@
                 {data: 'unit.unit', name: 'unit.unit'},
                 {data: 'dpd.dpd', name: 'dpd.dpd', defaultContent: ""},
                 {data: 'dpc.dpc', name: 'dpc.dpc', defaultContent: ""},
-                {data: 'created_at', name: 'created_at', defaultContent: ""},
-                {data: 'tgl_pendaftaran', name: 'tgl_pendaftaran', defaultContent: ""},
+                // {data: 'created_at', name: 'created_at', defaultContent: ""},
+                // {data: 'tgl_pendaftaran', name: 'tgl_pendaftaran', defaultContent: ""},
                 {data: 'status.status', name: 'status.status'},
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('keanggotaan_anggota-print')): ?>
                     {
@@ -197,10 +191,12 @@
             ]
         });
 
-        $('.filter-input').keyup(function(){
-            datatables.column($(this).data('column'))
-            .search($(this).val())
-            .draw();
+        $('.filter-input').blur(function(){
+            // if (e.key === 'Enter' || e.keyCode === 13) {
+                datatables.column($(this).data('column'))
+                .search($(this).val())
+                .draw();
+            // }
         });
     </script>
 <?php $__env->stopPush(); ?>

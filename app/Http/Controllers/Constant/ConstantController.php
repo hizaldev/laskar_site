@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Constant;
 
 use App\Http\Controllers\Controller;
 use App\Models\Logger;
+use App\Models\WhatsappGroup;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
@@ -94,8 +95,8 @@ class ConstantController extends Controller
          $logger = Logger::create($data);
     }
 
-    public static function sendMessageWhatssap($message, $receiver){
-         $url = env('WHATSAPP_GATEWAY_URL');
+   public static function sendMessageWhatssap($message, $receiver){
+         $url = env('WHATSAPP_GATEWAY_URL')."/messages";
          $key = env('WHATSAPP_GATEWAY_API_KEY');
          $device = env('WHATSAPP_GATEWAY_DEVICE');
 
@@ -146,10 +147,94 @@ class ConstantController extends Controller
             $skuList = preg_split('/\r\n|\r|\n/', $e->getMessage());
             ConstantController::loggerNonAuth("whatsapp gagal terkirim with message : $skuList[1]", 'Module', "whatsapp notification gagal", $receiver);
             ConstantController::errorAlert("Whatsap gagal mengirim dengan error: $skuList[1]");
+         } 
+   }
+
+   public static function sendMessageWhatssapGroup($message, $group_id, $type = 'chat', $image_url = null){
+      $url = env('WHATSAPP_GATEWAY_URL')."/groups/$group_id/send";
+      $key = env('WHATSAPP_GATEWAY_API_KEY');
+
+      $client = new Client();
+      if($type == 'chat'){
+         $data = array(
+            'type' => 'chat',
+            'message' => "$message",
+            'simulate_typing' => 1
+         );
+      }else{
+         $data = array(
+            'type' => 'chat',
+            'params' => [
+               'image' => [
+               'url' => 'https://images.unsplash.com/photo-1653764982079-c7c5e4fd682a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
+               ],
+               "caption" => "$message",
+            ],
+            'simulate_typing' => 1
+         );
+      }
+
+      $client = new Client();
+      // dd(json_encode($data));
+      try{
+         $response = $client->post($url, [
+            'headers' => [
+                  'Content-Type' => 'application/json', 
+                  'Accept' => 'application/json', 
+                  'Authorization' => 'Bearer '.$key
+            ],
+            'body'    => json_encode($data)
+         ]); 
+         $hasil = (array)json_decode((string)$response->getBody(), true);
+         if($hasil['status'] == 200){
+            // dd($hasil);
+            // dd($hasil['data']['status']);
+            $status = $hasil['data']['status'];
+            $message = $hasil['data']['body'];
+            ConstantController::loggerNonAuth("$message", 'Module', "whatsapp notification $status", $group_id);
+         }else{
+            ConstantController::loggerNonAuth("whatsapp gagal terkirim", 'Module', "whatsapp notification gagal", $group_id);
          }
-         
-         
-         
+      }catch(Exception $e){
+         $skuList = preg_split('/\r\n|\r|\n/', $e->getMessage());
+         ConstantController::loggerNonAuth("whatsapp gagal terkirim with message : $skuList[1]", 'Module', "whatsapp notification gagal", $group_id);
+         ConstantController::errorAlert("Whatsap gagal mengirim dengan error: $skuList[1]");
+      } 
+   }
+
+
+   public static function getGroupList(){
+      
+      $key = env('WHATSAPP_GATEWAY_API_KEY');
+      $device = env('WHATSAPP_GATEWAY_DEVICE');
+      $url = env('WHATSAPP_GATEWAY_URL')."/groups?device=$device";
+
+      $client = new Client();
+      // dd(json_encode($data)   );
+      try{
+         $response = $client->get($url, [
+               'headers' => [
+                  'Content-Type' => 'application/json', 
+                  'Accept' => 'application/json', 
+                  'Authorization' => 'Bearer '.$key
+               ],
+         ]); 
+         $hasil = (array)json_decode((string)$response->getBody(), true);
         
-    }
+         if($hasil['status'] == 200){
+            WhatsappGroup::truncate();
+            $data = $hasil['data'];
+            for($i = 0; $i < count($data); $i++){
+               $data['id'] = $data[$i]['id'];
+               $data['group_name'] = $data[$i]['title'];
+               $data['muted'] = $data[$i]['muted'] == true ? 'Yes' : 'No';
+               $data['spam'] = $data[$i]['spam'] == true ? 'Yes' : 'No';
+               WhatsappGroup::create($data);
+            }
+         }else{
+         }
+      }catch(Exception $e){
+         ConstantController::errorAlert($e->getMessage());
+      } 
+}
 }

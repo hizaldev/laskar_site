@@ -17,6 +17,8 @@ class VoterController extends Controller
         // $this->middleware('permission:pemilu_evote-edit', ['only' => ['edit','update']]);
         // $this->middleware('permission:pemilu_evote-delete', ['only' => ['destroy']]);
         $this->middleware('permission:pemilu_evote-show', ['only' => ['show']]);
+        $this->middleware('permission:dashboard-dashboard_evote_show', ['only' => ['dashboardlaskar']]);
+
     }
 
     public function resendNotification(Request $request, $voter) {

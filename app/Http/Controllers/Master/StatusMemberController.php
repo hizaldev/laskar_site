@@ -142,7 +142,7 @@ class StatusMemberController extends Controller
             ConstantController::logger($item->getOriginal(), $this->route.'update', 'update success');
             ConstantController::successAlert();
         } catch(Exception $e){
-            ConstantController::logger($item->getMessage(), $this->route.'update', 'update error');
+            ConstantController::logger($e->getMessage(), $this->route.'update', 'update error');
             ConstantController::errorAlert($e->getMessage());
         }
 

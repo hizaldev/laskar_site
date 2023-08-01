@@ -199,10 +199,12 @@
             ]
         });
 
-        $('.filter-input').keyup(function(){
-            datatables.column($(this).data('column'))
-            .search($(this).val())
-            .draw();
+        $('.filter-input').blur(function(){
+            // if (e.key === 'Enter' || e.keyCode === 13) {
+                datatables.column($(this).data('column'))
+                .search($(this).val())
+                .draw();
+            // }
         });
     </script>
 @endpush

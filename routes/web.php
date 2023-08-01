@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthOtpController;
 use App\Http\Controllers\CaptchaValidationController;
+use App\Http\Controllers\ContentManagement\CategoryNewsController;
+use App\Http\Controllers\ContentManagement\LinksController;
+use App\Http\Controllers\ContentManagement\NewsController;
 use App\Http\Controllers\Evote\ElectionController;
 use App\Http\Controllers\Evote\VoterController;
 use App\Http\Controllers\Keanggotaan\AnggotaController;
@@ -19,6 +22,8 @@ use App\Http\Controllers\Master\UnitController;
 use App\Http\Controllers\Settings\PermissionController;
 use App\Http\Controllers\Settings\RoleController;
 use App\Http\Controllers\Settings\UserController;
+use App\Http\Controllers\Settings\WhatsappGroupController;
+use App\Models\NewsCategory;
 use Illuminate\Support\Facades\Route;
 
 
@@ -54,9 +59,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('permisions', PermissionController::class);
     Route::resource('users', UserController::class);
+    Route::resource('whatsapp_groups', WhatsappGroupController::class);
     
     // Dashboard
     Route::get('/dashboard_ellection', [ElectionController::class, 'dashboardEvote'])->name('evotes.dashboard_evote');
+    Route::get('/dashboard_laskar', [AnggotaController::class, 'dashboardlaskar'])->name('members.dashboard_laskar');
 
     // Master
     Route::resource('dpd', DpdController::class);
@@ -84,6 +91,23 @@ Route::group(['middleware' => ['auth']], function() {
     Route::delete('/destro_voter/{id}', [ElectionController::class, 'destroyVoters'])->name('evotes.destroyVoters');
     Route::put('/update_candidate/{id}', [ElectionController::class, 'update_candidate'])->name('evotes.update_candidate');
     Route::post('store_candidate', [ElectionController::class, 'store_candidate'])->name('evotes.store_candidate');
+
+    // Content Management
+    Route::resource('links', LinksController::class);
+    Route::resource('news_category', CategoryNewsController::class);
+    Route::post('storeCategory', [CategoryNewsController::class, 'storeCategory'])->name('news_category.storeCategory');
+    Route::resource('news', NewsController::class);
+    Route::get('/get_category', [CategoryNewsController::class, 'getCategories'])->name('news_category.getCategories');
+    // Route::delete('/destroyDocumentaion/{id}', [NewsController::class, 'destroyDocumentation'])->name('news.destroyDocumentation');
+    Route::get('/destroyDocumentaion/{id}', [NewsController::class, 'destroyDocumentation'])->name('news.destroyDocumentation');
+    
+
+
+
+    // report
+    Route::get('report/export/', [AnggotaController::class, 'export'])->name('exportMember');
+
+
 
     // Route::get('/resendNotification/{voter}', [VoterController::class, 'resendNotification']);
 
