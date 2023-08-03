@@ -32,6 +32,8 @@ class RegisterMembers extends Model
         'tgl_masuk',
         'approval',
         'kode_refferal',
+        'is_out_serikat',
+        'union_id',
     ];
 
     public function unit(){

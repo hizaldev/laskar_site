@@ -77,6 +77,7 @@
                         'master_golongan_darah-list',
                         'master_bank-list',
                         'master_unit-list',
+                        'master_serikat_pekerja-list',
                        
                     ])
                         <li class="nav-item dropdown">
@@ -110,6 +111,9 @@
                                 @endcan
                                 @can('master_unit-list')
                                     <a class="dropdown-item" href="{{ route('units.index') }}">Unit</a>
+                                @endcan
+                                @can('master_serikat_pekerja-list')
+                                    <a class="dropdown-item" href="{{ route('unions.index') }}">Serikat Pekerja</a>
                                 @endcan
                             </div>
                             

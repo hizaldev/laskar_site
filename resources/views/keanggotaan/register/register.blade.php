@@ -139,6 +139,29 @@
                                     </span>
                                 @enderror
                             </div>
+                            <label for="no_telpon">Sudah bergabung dengan serikat lain sebelumnya ?</label><br>
+                            <div class="form-check form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="is_out_serikat" id="inlineRadio1" value="Ya">
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="is_out_serikat" id="inlineRadio2" value="Tidak" required>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="union_id">Serikat Pekerja</label>
+                                <select name="union_id" class="form-control @error('union_id') is-invalid @enderror" id="union_id" disabled>
+                                    <option value="">-- Pilih Serikat Pekerja Sebelumnya --</option>
+                                    @foreach ( $serikat as $union )
+                                        <option value="{{$union->id}}" {{old('size_id') == $union->id ? 'selected' : ''}}>{{$union->serikat_pekerja}}</option>
+                                    @endforeach
+                                </select>
+                                @error('size_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                             <div class="form-group mb-3">
                                 <label for="no_telpon">Tanda Tangan Digital <span class="text-danger">*</span></label>
                                 <br>
@@ -291,6 +314,17 @@
         });
         $("#tempat_lahir").select2({
             theme: "bootstrap-5",
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#inlineRadio1").click(function() {
+            $("#union_id").attr("disabled", false);
+            //$("#discountselection").show(); //To Show the dropdown
+        });
+        $("#inlineRadio2").click(function() {
+            $("#union_id").attr("disabled", true);
+            //$("#discountselection").hide();//To hide the dropdown
         });
     </script>
 

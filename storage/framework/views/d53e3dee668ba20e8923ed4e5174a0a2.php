@@ -270,6 +270,43 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
+                            <label for="no_telpon">Sudah bergabung dengan serikat lain sebelumnya ?</label><br>
+                            <div class="form-check form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="is_out_serikat" id="inlineRadio1" value="Ya">
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="is_out_serikat" id="inlineRadio2" value="Tidak" required>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="union_id">Serikat Pekerja</label>
+                                <select name="union_id" class="form-control <?php $__errorArgs = ['union_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="union_id" disabled>
+                                    <option value="">-- Pilih Serikat Pekerja Sebelumnya --</option>
+                                    <?php $__currentLoopData = $serikat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $union): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($union->id); ?>" <?php echo e(old('size_id') == $union->id ? 'selected' : ''); ?>><?php echo e($union->serikat_pekerja); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <?php $__errorArgs = ['size_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong><?php echo e($message); ?></strong>
+                                    </span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
                             <div class="form-group mb-3">
                                 <label for="no_telpon">Tanda Tangan Digital <span class="text-danger">*</span></label>
                                 <br>
@@ -434,6 +471,17 @@ unset($__errorArgs, $__bag); ?>
         });
         $("#tempat_lahir").select2({
             theme: "bootstrap-5",
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#inlineRadio1").click(function() {
+            $("#union_id").attr("disabled", false);
+            //$("#discountselection").show(); //To Show the dropdown
+        });
+        $("#inlineRadio2").click(function() {
+            $("#union_id").attr("disabled", true);
+            //$("#discountselection").hide();//To hide the dropdown
         });
     </script>
 

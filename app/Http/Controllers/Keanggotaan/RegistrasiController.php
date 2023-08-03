@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\CounterRegister;
 use App\Models\RegisterMembers;
 use App\Models\Size;
+use App\Models\Union;
 use App\Models\Unit;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,10 +29,12 @@ class RegistrasiController extends Controller
         $unit = Unit::orderBy('unit', 'asc')->get();
         $size = Size::orderBy('ukuran', 'asc')->get();
         $city = City::orderBy('kota', 'asc')->get();
+        $serikat = Union::where('id', '!=' , '99c9eb79-39fb-40d2-8328-a31eabbb2877')->orderBy('serikat_pekerja', 'asc')->get();
         return view("$this->path_view.register", [
             'unit' => $unit,
             'size' => $size,
             'city' => $city,
+            'serikat' => $serikat,
         ]);
     }
 
@@ -96,6 +99,13 @@ class RegistrasiController extends Controller
             $data['grade'] = $request->grade;
             $data['ip_address'] = requestip::ip();
             $data['sign'] = $imageName;
+            if($request->is_out_serikat == 'Ya'){
+                $data['is_out_serikat'] = $request->is_out_serikat;
+                $data['union_id'] = $request->union_id;
+            }else{
+                $data['is_out_serikat'] = $request->is_out_serikat;
+                $data['union_id'] = '99c9eb79-39fb-40d2-8328-a31eabbb2877';
+            }
             RegisterMembers::create($data);
             $message = "Terima kasih $request->nama_lengkap telah telah bergabung dengan Laskar PLN dengan nomor pendaftaran sebagai berikut $no_register pendaftaran anda akan segera kami proses dan kami akan menghubungi anda kembali \n\n\n\nSalam hangat dari kami\n *Laskar PLN*";
             $reciver = $request->no_telpon;

@@ -15,6 +15,7 @@ use App\Http\Controllers\Master\CityController;
 use App\Http\Controllers\Master\DpcController;
 use App\Http\Controllers\Master\DpdController;
 use App\Http\Controllers\Master\ReligionController;
+use App\Http\Controllers\Master\SerikatPekerjaController;
 use App\Http\Controllers\Master\SizeController;
 use App\Http\Controllers\Master\StatusMemberController;
 use App\Http\Controllers\Master\TypeBloodController;
@@ -75,6 +76,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('banks', BankController::class);
     Route::resource('status_members', StatusMemberController::class);
     Route::resource('units', UnitController::class);
+    Route::resource('unions', SerikatPekerjaController::class);
     
     // keanggotaan
     Route::resource('process_members', ProcessMemberController::class);
