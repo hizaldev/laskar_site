@@ -150,7 +150,7 @@ class ConstantController extends Controller
          } 
    }
 
-   public static function sendMessageWhatssapGroup($message, $group_id, $type = 'chat', $image_url = null){
+   public static function sendMessageWhatssapGroup($message, $group_id, $type = 'chat', $file = null, $title = "file.pdf"){
       $url = env('WHATSAPP_GATEWAY_URL')."/groups/$group_id/send";
       $key = env('WHATSAPP_GATEWAY_API_KEY');
 
@@ -161,16 +161,31 @@ class ConstantController extends Controller
             'message' => "$message",
             'simulate_typing' => 1
          );
-      }else{
+      }
+      if($type == 'image'){
          $data = array(
             'type' => 'chat',
             'params' => [
                'image' => [
-               'url' => 'https://images.unsplash.com/photo-1653764982079-c7c5e4fd682a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
+               'url' => $file
                ],
                "caption" => "$message",
             ],
             'simulate_typing' => 1
+         );
+      }
+
+      if($type == 'file'){
+         $now = Carbon::now();
+         $data = array(
+               "type" => "chat",
+               "params" => [
+                   "document" => [
+                       "url" => $file
+                     ],
+                   "fileName" => $title,
+                   "mimeType" => "application/pdf"
+               ]
          );
       }
 

@@ -3,7 +3,7 @@
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="container-fluid px-4">
-        <form action="{{ route('evotes.store_vote')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('evotes.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 @if ($errors->any())
@@ -144,7 +144,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="judul_pemilihan">Foto Bakal Calon 1</label>
-                                <input type="file" class="form-control form-control-sm" name="photo[0]" id="photo[0]" value="{{old('photo.0')}}" placeholder="Masukan Nama Calon Yang Akan diPilih">
+                                <input type="file" class="form-control form-control-sm" name="photo[0]" id="photo[0]" value="{{old('photo.0')}}" placeholder="Masukan Nama Calon Yang Akan diPilih" required>
                             </div>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="judul_pemilihan">Foto Bakal Calon 2</label>
-                                <input type="file" class="form-control form-control-sm" name="photo[1]" id="photo[0]" value="{{old('photo.1')}}" placeholder="Masukan Nama Calon Yang Akan diPilih">
+                                <input type="file" class="form-control form-control-sm" name="photo[1]" id="photo[1]" value="{{old('photo.1')}}" placeholder="Masukan Nama Calon Yang Akan diPilih" required>
                             </div>
                         </div>
                     </div>
@@ -190,7 +190,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="judul_pemilihan">Foto Bakal Calon 3</label>
-                                <input type="file" class="form-control form-control-sm" name="photo[0]" id="photo[0]" value="{{old('photo.2')}}"  placeholder="Masukan Nama Calon Yang Akan diPilih">
+                                <input type="file" class="form-control form-control-sm" name="photo[2]" id="photo[2]" value="{{old('photo.2')}}"  placeholder="Masukan Nama Calon Yang Akan diPilih" required>
                             </div>
                         </div>
                     </div>

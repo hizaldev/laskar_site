@@ -53,6 +53,7 @@ Route::post('sign-in', [AuthOtpController::class, 'sendOtp'])->name('sign-in');
 Route::post('authenticate', [AuthOtpController::class, 'authenticate'])->name('authenticate');
 Route::get('/evote/{id}', [ElectionController::class, 'CollectVote'])->name('evotes.CollectVote');
 Route::post('store_vote', [ElectionController::class, 'store_vote'])->name('evotes.store_vote');
+Route::get('/read_news/{id}', [NewsController::class, 'readNews'])->name('news.read_news');
 
 
 

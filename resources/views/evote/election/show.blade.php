@@ -33,7 +33,11 @@
                                     @foreach ( $candidate as $candidates )
                                         <div class="col-md-3">
                                             <div class="card h-100">
-                                                <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" class="card-img-top" alt="...">
+                                                @if ($candidates->photo != null)
+                                                    <img src="{{$candidates->photo}}" width="400px" height="400px" class="card-img-top" alt="...">
+                                                @else
+                                                    <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" class="card-img-top" alt="...">
+                                                @endif
                                                 <div class="card-body">
                                                     <p class="text-muted">
                                                         <h4 style="overflow: hidden;

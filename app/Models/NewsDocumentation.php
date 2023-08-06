@@ -17,6 +17,7 @@ class NewsDocumentation extends Model
         'news_id',
         'photos',
         'initial',
+        'tipe',
         'deleted_at',
     ];
 

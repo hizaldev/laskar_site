@@ -135,6 +135,7 @@ class ElectionController extends Controller
                 $count_peserta = count($request->peserta);
             }
         try{
+            $url_path = env('DO_URL');
             $data['judul_pemilihan'] = $request->judul_pemilihan;
             $data['deskripsi'] = $request->deskripsi;
             $data['tgl_vote_mulai'] = $request->tgl_vote_mulai;
@@ -143,12 +144,18 @@ class ElectionController extends Controller
             // dd($vote->id);
             ConstantController::logger($vote->getOriginal(), $this->route.'.store', 'insert success');
             // start action candidate
+            $file = $request->file('photo');
             for($i = 0; $i < count($request->nama_lengkap); $i++){
                 if($request->nama_lengkap[$i] != null){
                     $dataCandidate['vote_id'] = $vote->id;
                     $dataCandidate['nama_lengkap'] = $request->nama_lengkap[$i];
                     $dataCandidate['visi'] = $request->visi[$i];
                     $dataCandidate['misi'] = $request->misi[$i];
+                    $storeFile = $file[$i]->storePublicly(
+                        "evote/".Carbon::now()->isoFormat('Y').'/'.Carbon::now()->isoFormat('MMMM').'/'.$vote->id,
+                        'spaces'
+                    );
+                    $dataCandidate['photo'] = $url_path.'/'.$storeFile;
                     Candidate::create($dataCandidate);
                 }
             }
@@ -355,18 +362,27 @@ class ElectionController extends Controller
             'visi' => 'required',
             'misi' => 'required',
         ]);
-
+        $url_path = env('DO_URL');
+        $item = Candidate::findOrFail($id);
         try{
             $data['nama_lengkap']   = $request->nama_lengkap;
             $data['visi'] = $request->visi;
             $data['misi'] = $request->misi;
+            if($request->file('photo') != null){
+                // check file ada atau tidak
+                $storeFile = $request->file('photo')->storePublicly(
+                    "evote/".Carbon::now()->isoFormat('Y').'/'.Carbon::now()->isoFormat('MMMM').'/'.$item->vote_id,
+                    'spaces'
+                );
+                $data['photo'] = $url_path.'/'.$storeFile;
+            }
             $item = Candidate::findOrFail($id);
             $item->update($data);
 
             ConstantController::logger($item->getOriginal(), $this->route.'.update', 'update success');
             ConstantController::successAlert();
         } catch(Exception $e){
-            ConstantController::logger($item->getMessage(), $this->route.'.update', 'update error');
+            ConstantController::logger($e->getMessage(), $this->route.'.update', 'update error');
             ConstantController::errorAlert($e->getMessage());
         }
 

@@ -3,180 +3,242 @@
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="container-fluid px-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header"><strong>Edit Berita Laskar</strong></div>
-                    <div class="card-body">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        <form action="{{ route('news.update', $item->id)}}" method="POST" enctype="multipart/form-data">
-                            @method('PUT')
-                            @csrf
-                            <div class="form-group mb-3">
-                                <label for="judul">Judul Berita</label>
-                                <input type="text" class="form-control form-control-sm @error('judul') is-invalid @enderror" name="judul" value="{{$item->judul}}" id="kategori_berita" placeholder="Masukan Judul Berita">
-                                @error('judul')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="is_show" name="is_show" id="is_show" {{$item->is_show == 'Ya' ? 'checked' : ''}}>
-                                            <label class="form-check-label" for="is_show">Tampilkan Berita</label>
-                                        </div>
-                                    </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <form action="{{ route('news.update', $item->id)}}" method="POST" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header"><strong>Edit Berita Laskar</strong></div>
+                        <div class="card-body">
+                        
+                                <div class="form-group mb-3">
+                                    <label for="judul">Judul Berita</label>
+                                    <input type="text" class="form-control form-control-sm @error('judul') is-invalid @enderror" name="judul" value="{{$item->judul}}" id="kategori_berita" placeholder="Masukan Judul Berita">
+                                    @error('judul')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="is_public" name="is_public" id="is_public" {{$item->is_public == 'Ya' ? 'checked' : ''}}>
-                                            <label class="form-check-label" for="is_public">Berita Publik</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="is_schedule" name="is_schedule" id="is_schedule" {{$item->is_schedule == 'Ya' ? 'checked' : ''}}>
-                                            <label class="form-check-label" for="is_schedule">Dijadwalkan</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="penulis" name="penulis" id="penulis" {{$item->penulis == 'Admin Humas Laskar PLN' ? 'checked' : ''}}>
-                                            <label class="form-check-label" for="penulis">Penulis Laskar</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group mb-3 col-md-6 col-sm-12">
-                                        <label for="judul">Tanggal Tayang mulai</label>
-                                        <input type="date" class="form-control @error('tgl_tayang_mulai') is-invalid @enderror" name="tgl_tayang_mulai" value="{{ $item->tgl_tayang_mulai }}" id="tgl_tayang_mulai" placeholder="dd/mm/yyyy">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group mb-3 col-md-6 col-sm-12">
-                                        <label for="judul">Tanggal Tayang berakhir</label>
-                                        <input type="date" class="form-control @error('tgl_tayang_berakhir') is-invalid @enderror" name="tgl_tayang_berakhir" value="{{ $item->tgl_tayang_berakhir }}" id="tgl_tayang_berakhir" placeholder="dd/mm/yyyy">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label >Multiple file</label>
-                                <input type="file" multiple class="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file[]" aria-label="Upload">
-                            </div>
-                            <button type="button" class="btn btn-primary btn-sm mr-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-plus"></i> Kategori Berita</button>
-                            <div class="form-group mb-3">
-                                <label >Kategori Berita</label>
-                                <div class="col-sm-12 mb-3">
-                                    <select class="form-select fom-select-sm js-example-basic-single w-full" multiple name="kategori_berita_id[]" id="select2_member" required>
-                                        @foreach ( $kategori_berita as $categories )
-                                            <option value="{{$categories}}" selected>{{$categories}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <textarea class="form-control form-control-sm" name="berita" id="myeditorinstance" placeholder="Isi Berita" rows="5">{{$item->berita}}</textarea>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 d-none d-sm-none d-md-block">
-                                    <div class="alert alert-warning">
-                                        Format gambar .jpg .jpeg .png dan ukuran minimum 300 x 300px (Untuk gambar optimal gunakan ukuran minimum 700 x 700 px).<br>
-                                        Pilih foto Berita dan letakkan dimasing-masing inputan hingga 4 foto di sini. Upload min. Foto utama akan digunakan sebagai tampilan awal foto atau <strong>broadcast whatsapp group</strong> apabila dipilih
-                                    </div>
-                                </div>
-                                @if (count($item->documentation) > 0)
-                                    @foreach ( $item->documentation as $photos )
-                                        <div class="col-md-3">
-                                            <div class="form-group mb-3 position-relative">
-                                                <img src="{{$photos->photos}}" class="img-thumbnail h-100" alt="...">
-                                                <a href="{{route("news.destroyDocumentation",$photos->id)}}">
-                                                    <span class="position-absolute top-0 start-100 translate-middle px-2 bg-danger border border-light rounded-circle">
-                                                        <i class="fa-solid fa-xmark text-white"></i>
-                                                    </span>
-                                                </a>
-                                                
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-group mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="is_show" name="is_show" id="is_show" {{$item->is_show == 'Ya' ? 'checked' : ''}}>
+                                                <label class="form-check-label" for="is_show">Tampilkan Berita</label>
                                             </div>
                                         </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                            <di class="row ">
-                                
-                                <div class="col-md-3">
-                                    <div class="form-group mb-3">
-                                        <label >Foto Utama</label>
-                                        <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file0" aria-label="Upload">
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-group mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="is_public" name="is_public" id="is_public" {{$item->is_public == 'Ya' ? 'checked' : ''}}>
+                                                <label class="form-check-label" for="is_public">Berita Publik</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-group mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="is_schedule" name="is_schedule" id="is_schedule" {{$item->is_schedule == 'Ya' ? 'checked' : ''}}>
+                                                <label class="form-check-label" for="is_schedule">Dijadwalkan</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-group mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="penulis" name="penulis" id="penulis" {{$item->penulis == 'Admin Humas Laskar PLN' ? 'checked' : ''}}>
+                                                <label class="form-check-label" for="penulis">Penulis Laskar</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group mb-3">
-                                        <label >Foto 2</label>
-                                        <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file1" aria-label="Upload">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group mb-3 col-md-6 col-sm-12">
+                                            <label for="judul">Tanggal Tayang mulai</label>
+                                            <input type="date" class="form-control @error('tgl_tayang_mulai') is-invalid @enderror" name="tgl_tayang_mulai" value="{{ $item->tgl_tayang_mulai }}" id="tgl_tayang_mulai" placeholder="dd/mm/yyyy">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group mb-3 col-md-6 col-sm-12">
+                                            <label for="judul">Tanggal Tayang berakhir</label>
+                                            <input type="date" class="form-control @error('tgl_tayang_berakhir') is-invalid @enderror" name="tgl_tayang_berakhir" value="{{ $item->tgl_tayang_berakhir }}" id="tgl_tayang_berakhir" placeholder="dd/mm/yyyy">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group mb-3">
-                                        <label >Foto 3</label>
-                                        <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file2" aria-label="Upload">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group mb-3">
-                                        <label >Foto 4</label>
-                                        <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file3" aria-label="Upload">
-                                    </div>
-                                </div>
-                            </di>                            
-                            <div class="d-flex">
+                                <button type="button" class="btn btn-primary btn-sm mr-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-plus"></i> Kategori Berita</button>
                                 <div class="form-group mb-3">
-                                    <div class="form-check form-switch ">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="sendWa" name="sendWa" id="sendWa">
-                                        <label class="form-check-label mx-3" for="sendWa">Broadcast Group</label>
-                                        
+                                    <label >Kategori Berita</label>
+                                    <div class="col-sm-12 mb-3">
+                                        <select class="form-select fom-select-sm js-example-basic-single w-full" multiple name="kategori_berita_id[]" id="select2_member" required>
+                                            @foreach ( $kategori_berita as $categories )
+                                                <option value="{{$categories}}" selected>{{$categories}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <select class="form-select form-select-sm w-full" name="group_id" id="select2_wa">
-                                        <option value="">-- Pilih Group --</option>
-                                        @foreach ( $group as $groups )
-                                            <option value="{{$groups->id}}">{{$groups->group_name}}</option>
+                                <div class="form-group mb-3">
+                                    <textarea class="form-control form-control-sm" name="berita" id="myeditorinstance" placeholder="Isi Berita" rows="5">{{$item->berita}}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-sm mr-2 mt-2">Submit</button>
+                                <a href="#" class="btn btn-secondary btn-sm mt-2" role="button" aria-pressed="true" value="Go Back" onclick="history.back(-1)">Cancel</a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header"><strong>Lampiran dan Notifikasi Berita Laskar</strong></div>
+                        <div class="card-body">
+                        
+                               
+                                <div class="row">
+                                    <div class="col-12 d-none d-sm-none d-md-block">
+                                        <div class="alert alert-warning">
+                                            Format gambar .jpg .jpeg .png dan ukuran minimum 300 x 300px (Untuk gambar optimal gunakan ukuran minimum 700 x 700 px).<br>
+                                            Pilih foto Berita dan letakkan dimasing-masing inputan hingga 4 foto di sini. Upload min. Foto utama akan digunakan sebagai tampilan awal foto atau <strong>broadcast whatsapp group</strong> apabila dipilih
+                                        </div>
+                                    </div>
+                                    @if (count($item->documentation) > 0)
+                                        @foreach ( $item->documentation as $photos )
+                                            @if ($photos->tipe == "Images")
+                                                <div class="col-md-3">
+                                                    <div class="form-group mb-3 position-relative">
+                                                        <img src="{{$photos->photos}}" class="img-thumbnail h-100" alt="...">
+                                                        <a href="{{route("news.destroyDocumentation",$photos->id)}}">
+                                                            <span class="position-absolute top-0 start-100 translate-middle px-2 bg-danger border border-light rounded-circle">
+                                                                <i class="fa-solid fa-xmark text-white"></i>
+                                                            </span>
+                                                        </a>
+                                                        
+                                                    </div>
+                                                </div>
+                                            @endif
                                         @endforeach
-                                    </select>
+                                    @endif
                                 </div>
-                                <div class="form-check form-check-inline mx-4">
-                                    <input class="form-check-input" type="radio" name="format_send" id="inlineRadio1" value="body" checked>
-                                    <label class="form-check-label" for="inlineRadio1">Judul + body</label>
+                                <div class="row ">
+                                    
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label >Foto Utama</label>
+                                            <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file0" aria-label="Upload">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label >Foto 2</label>
+                                            <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file1" aria-label="Upload">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label >Foto 3</label>
+                                            <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file2" aria-label="Upload">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label >Foto 4</label>
+                                            <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file3" aria-label="Upload">
+                                        </div>
+                                    </div>
+                                </div>   
+                                <div class="row ">
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label >File Lampiran<span class="text-danger"> format file harus .pdf</span></label>
+                                            <input type="file" class="form-control form-control-sm" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" name="file" aria-label="Upload">
+                                        </div>
+                                        @if (count($item->documentation) > 0)
+                                            @foreach ( $item->documentation as $photos )
+                                                @if ($photos->tipe == "File")
+                                                            <a href="{{route("news.destroyDocumentation",$photos->id)}}">
+                                                                <span class="">
+                                                                    Delete File Lampiran
+                                                                </span>
+                                                            </a>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>                         
+                                <div class="d-flex">
+                                    <div class="form-group mb-3">
+                                        <div class="form-check form-switch ">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="sendWa" name="sendWa" id="sendWa">
+                                            <label class="form-check-label mx-3" for="sendWa">Broadcast Group</label>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <select class="form-select form-select-sm w-full" name="group_id" id="select2_wa">
+                                            <option value="">-- Pilih Group --</option>
+                                            @foreach ( $group as $groups )
+                                                <option value="{{$groups->id}}">{{$groups->group_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    
+                                   
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="format_send" id="inlineRadio2" value="header">
-                                    <label class="form-check-label" for="inlineRadio2">Judul</label>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline mx-4">
+                                            <input class="form-check-input" type="radio" name="format_send" id="inlineRadio1" value="body" checked>
+                                            <label class="form-check-label" for="inlineRadio1">Judul + body</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="format_send" id="inlineRadio2" value="header">
+                                            <label class="form-check-label" for="inlineRadio2">Judul</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="format_send" id="inlineRadio3" value="body_only">
+                                            <label class="form-check-label" for="inlineRadio3">Body</label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <button type="submit" class="btn btn-success btn-sm mr-2 mt-2">Submit</button>
-                            <a href="#" class="btn btn-secondary btn-sm mt-2" role="button" aria-pressed="true" value="Go Back" onclick="history.back(-1)">Cancel</a>
-                        </form>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="lampiran_wa" id="lampiran2" value="image" checked>
+                                            <label class="form-check-label" for="lampiran2">Image</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline mx-4">
+                                            <input class="form-check-input" type="radio" name="lampiran_wa" id="lampiran1" value="file">
+                                            <label class="form-check-label" for="lampiran1">File</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline mx-4">
+                                            <input class="form-check-input" type="radio" name="lampiran_wa" id="lampiran3" value="tanpa_lampiran">
+                                            <label class="form-check-label" for="lampiran3">Tanpa Lampiran</label>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
      <!-- Modal -->
      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -243,9 +305,9 @@
     <script src="https://cdn.tiny.cloud/1/g98z73jkc1wixst6j7zxujkbms7cn8btz0c42unv4e3gj0x2/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
        tinymce.init({
-         selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
-         plugins: 'powerpaste advcode table lists checklist',
-         toolbar: 'undo redo | blocks| bold italic | bullist numlist checklist | code | table'
+            selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
+            plugins: 'table lists emoticons wordcount',
+            toolbar: 'undo redo | blocks| emoticons | bold italic | bullist numlist checklist | code | table'
        });
     </script>
     <script>
@@ -260,6 +322,10 @@
             document.getElementById('select2_wa').disabled = true;
             document.getElementById('inlineRadio1').disabled = true;
             document.getElementById('inlineRadio2').disabled = true;
+            document.getElementById('inlineRadio3').disabled = true;
+            document.getElementById('lampiran1').disabled = true;
+            document.getElementById('lampiran2').disabled = true;
+            document.getElementById('lampiran3').disabled = true;
             
         };
         var checkbox = document.querySelector("input[name=is_schedule]");
@@ -282,11 +348,19 @@
                 document.getElementById('select2_wa').disabled = false;
                 document.getElementById('inlineRadio1').disabled = false;
                 document.getElementById('inlineRadio2').disabled = false;
+                document.getElementById('inlineRadio3').disabled = false;
+                document.getElementById('lampiran1').disabled = false;
+                document.getElementById('lampiran2').disabled = false;
+                document.getElementById('lampiran3').disabled = false;
             } else {
                 console.log("Checkbox is not checked..");
                 document.getElementById('select2_wa').disabled = true;
                 document.getElementById('inlineRadio1').disabled = true;
                 document.getElementById('inlineRadio2').disabled = true;
+                document.getElementById('inlineRadio3').disabled = true;
+                document.getElementById('lampiran1').disabled = true;
+                document.getElementById('lampiran2').disabled = true;
+                document.getElementById('lampiran3').disabled = true;
             }
         });
         $('#store').click(function(e) {

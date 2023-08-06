@@ -11,11 +11,11 @@ use Spatie\Permission\Traits\HasRoles;
 
 class NewsCounter extends Model
 {
-    use HasFactory, Blameable, SoftDeletes, HasRoles, HasUuids;
+    use HasFactory, SoftDeletes, HasRoles, HasUuids;
 
     protected $fillable = [
         'news_id',
-        'ip_address',
+        'ip_address50',
         'viewers',
     ];
 }

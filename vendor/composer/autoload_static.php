@@ -159,6 +159,7 @@ class ComposerStaticInit84c0f0c4ede5535135f8241ddc64d6b9
         ),
         'J' => 
         array (
+            'Jorenvh\\Share\\' => 14,
             'JmesPath\\' => 9,
         ),
         'I' => 
@@ -529,6 +530,10 @@ class ComposerStaticInit84c0f0c4ede5535135f8241ddc64d6b9
         array (
             0 => __DIR__ . '/..' . '/laravel/sail/src',
         ),
+        'Jorenvh\\Share\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jorenvanhocht/laravel-share/src',
+        ),
         'JmesPath\\' => 
         array (
             0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
@@ -734,6 +739,7 @@ class ComposerStaticInit84c0f0c4ede5535135f8241ddc64d6b9
         'App\\Http\\Controllers\\Master\\DpcController' => __DIR__ . '/../..' . '/app/Http/Controllers/Master/DpcController.php',
         'App\\Http\\Controllers\\Master\\DpdController' => __DIR__ . '/../..' . '/app/Http/Controllers/Master/DpdController.php',
         'App\\Http\\Controllers\\Master\\ReligionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Master/ReligionController.php',
+        'App\\Http\\Controllers\\Master\\SerikatPekerjaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Master/SerikatPekerjaController.php',
         'App\\Http\\Controllers\\Master\\SizeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Master/SizeController.php',
         'App\\Http\\Controllers\\Master\\StatusMemberController' => __DIR__ . '/../..' . '/app/Http/Controllers/Master/StatusMemberController.php',
         'App\\Http\\Controllers\\Master\\TypeBloodController' => __DIR__ . '/../..' . '/app/Http/Controllers/Master/TypeBloodController.php',
@@ -772,6 +778,7 @@ class ComposerStaticInit84c0f0c4ede5535135f8241ddc64d6b9
         'App\\Models\\Size' => __DIR__ . '/../..' . '/app/Models/Size.php',
         'App\\Models\\StatusMember' => __DIR__ . '/../..' . '/app/Models/StatusMember.php',
         'App\\Models\\TypeBlood' => __DIR__ . '/../..' . '/app/Models/TypeBlood.php',
+        'App\\Models\\Union' => __DIR__ . '/../..' . '/app/Models/Union.php',
         'App\\Models\\Unit' => __DIR__ . '/../..' . '/app/Models/Unit.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\Vote' => __DIR__ . '/../..' . '/app/Models/Vote.php',
@@ -4488,6 +4495,9 @@ class ComposerStaticInit84c0f0c4ede5535135f8241ddc64d6b9
         'JmesPath\\TreeCompiler' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/TreeCompiler.php',
         'JmesPath\\TreeInterpreter' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/TreeInterpreter.php',
         'JmesPath\\Utils' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/Utils.php',
+        'Jorenvh\\Share\\Providers\\ShareServiceProvider' => __DIR__ . '/..' . '/jorenvanhocht/laravel-share/src/Providers/ShareServiceProvider.php',
+        'Jorenvh\\Share\\Share' => __DIR__ . '/..' . '/jorenvanhocht/laravel-share/src/Share.php',
+        'Jorenvh\\Share\\ShareFacade' => __DIR__ . '/..' . '/jorenvanhocht/laravel-share/src/ShareFacade.php',
         'Laravel\\Sail\\Console\\AddCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/AddCommand.php',
         'Laravel\\Sail\\Console\\Concerns\\InteractsWithDockerComposeServices' => __DIR__ . '/..' . '/laravel/sail/src/Console/Concerns/InteractsWithDockerComposeServices.php',
         'Laravel\\Sail\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/InstallCommand.php',

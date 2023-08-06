@@ -32,29 +32,39 @@
                             <div class="row justify-content-center">
                                 @foreach ( $candidate as $candidates )
                                     @if (count($candidate) > 1)
-                                        <div class="col-md-3">
+                                        <div class="col-md-3 mb-3">
                                             <div class="text-center">
-                                                <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" width="100" height="100" alt="..." class="img-thumbnail">
+                                                @if ($candidates->photo != null)
+                                                    <img src="{{$candidates->photo}}" width="400px" height="400px" class="card-img-top" alt="...">
+                                                @else
+                                                    <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" class="card-img-top" alt="...">
+                                                @endif
+                                                {{-- <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" width="100" height="100" alt="..." class="img-thumbnail"> --}}
                                                 <h4 class="fw-semibold mt-3">{{$candidates->nama_lengkap}}</h4>
                                                 <h5>Visi</h5>
                                                 <p class="text-wrap">{{$candidates->visi}}</p>
                                                 <h5>Misi</h5>
                                                 <p class="text-wrap">{{$candidates->misi}}</p>
-                                                <input type="radio" class="btn-check" name="candidate_id" id="option1" autocomplete="off" value="{{$candidates->id}}">
-                                                <label class="btn btn-secondary" for="option1">Pilih Saya</label>
+                                                <input type="radio" class="btn-check" name="candidate_id" id="{{$candidates->id}}" autocomplete="off" value="{{$candidates->id}}">
+                                                <label class="btn btn-outline-primary" for="{{$candidates->id}}">Pilih Saya</label>
                                             </div>
                                         </div>
                                     @else
                                         <div class="col-md-12 w-full">
                                             <div class="text-center">
-                                                <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" width="100" height="100" alt="..." class="img-thumbnail">
+                                                @if ($candidates->photo != null)
+                                                    <img src="{{$candidates->photo}}" class="card-img-top" alt="...">
+                                                @else
+                                                    <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" class="card-img-top" alt="...">
+                                                @endif
+                                                {{-- <img src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20spiky,%20jacket,%20turtleneck_md.png" width="100" height="100" alt="..." class="img-thumbnail"> --}}
                                                 <h4 class="fw-semibold mt-3">{{$candidates->nama_lengkap}}</h4>
                                                 <h5>Visi</h5>
                                                 <p class="text-wrap">{{$candidates->visi}}</p>
                                                 <h5>Misi</h5>
                                                 <p class="text-wrap">{{$candidates->misi}}</p>
-                                                <input type="radio" class="btn-check" name="candidate_id" id="option1" autocomplete="off" value="{{$candidates->id}}">
-                                                <label class="btn btn-outline-primary" for="option1">Pilih Saya</label>
+                                                <input type="radio" class="btn-check" name="candidate_id" id="{{$candidates->id}}" autocomplete="off" value="{{$candidates->id}}">
+                                                <label class="btn btn-outline-primary" for="{{$candidates->id}}">Pilih Saya</label>
                                             </div>
                                         </div>
                                     @endif
@@ -94,7 +104,6 @@
         <!-- Section: Design Block -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
         <script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
-        <script src="{{ asset('js/reload.captcha.js') }}"></script>   
     {{-- </div> --}}
 </body>
 </html>
