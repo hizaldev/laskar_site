@@ -51,7 +51,7 @@
                                     <div class="col-md-3 col-6">
                                         <a href="" class="d-block text-decoration-none fw-bold text-dark mb-3">
                                             <div class="card">
-                                                <img src="{{count($item->documentation) > 0 ? $item->documentation[0]->photos : asset('images/logo_laskar.jpeg')}}" class="card-img img-style" alt="...">
+                                                <img src="{{count($baca->documentation) > 0 ? $baca->documentation[0]->photos : asset('images/logo_laskar.jpeg')}}" height="150px" class="card-img img-style" alt="...">
                                             </div>
                                             <div class="text-lines" >
                                                 {{$baca->judul}}
@@ -90,13 +90,13 @@
 
                             @forelse ( $event as $event)
                                 <tr>
-                                    <td>
-                                         <img src="{{count($item->documentation) > 0 ? $item->documentation[0]->photos : asset('images/logo_laskar.jpeg')}}" class="card-img img-style" alt="..."> 
+                                    <td style="width:100px;">
+                                         <img src="{{count($event->documentation) > 0 ? $event->documentation[0]->photos : asset('images/logo_laskar.jpeg')}}" class="card-img img-style" height="100px" style="max-width: 100px;" alt="..."> 
                                     </td>
                                     <td>
-                                        <a class="text-decoration-none" href="{{ url('read_news', $popular->slug) }}">
-                                            <span class="text-dark fw-bold">{{$popular->judul}}</span><br>
-                                            <span class="text-muted" style="font-size:12px;">jam</span>
+                                        <a class="text-decoration-none" href="{{ url('read_news', $event->slug) }}">
+                                            <span class="text-dark fw-bold">{{$event->judul}}</span><br>
+                                            <span class="text-muted" style="font-size:12px;">{{\Carbon\Carbon::parse($event->tgl_tayang_mulai)->isoFormat('dddd, D MMMM Y')}}</span>
                                         </a>
                                     </td>
                                 </tr>

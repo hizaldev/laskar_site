@@ -54,6 +54,14 @@ class NewsController extends Controller
                     </a>
                 ';
             })
+            ->addColumn('show', function($item){
+                return '
+                
+                    <a class="btn btn-primary btn-sm text-white" href="'.url('read_news/'.$item->slug).'">
+                        <i class="fa-solid fa-search"></i>
+                    </a>
+                ';
+            })
             ->addColumn('delete', function($item){
                 return '
                     <form action="'. route("$this->route.destroy", $item->id).'" method="POST" id="form" class="form-inline" onSubmit="if (confirm(`Apa anda yakin menghapus data ini? data ini mungkin akan berpengaruh pada data transaksi aplikasi`)) run; return false">
@@ -65,7 +73,7 @@ class NewsController extends Controller
                 ';
             })
             ->addIndexColumn()
-            ->rawColumns(['edit', 'delete','berita'])
+            ->rawColumns(['edit', 'delete','berita','show'])
             ->make();
         }
         //dd($data);
@@ -395,7 +403,7 @@ class NewsController extends Controller
                 // development
                 // $message   .= "selengkapnya : https://laskar_site.test/read_news/".Str::slug($request->judul, '-')."/ \n";
                 // production
-                $message   .= "selengkapnya https://laskarpln.id/read_news/".Str::slug($request->judul, '-')."/ \n";
+                $message   .= $request->is_public == 'on' ? "selengkapnya https://laskarpln.id/read_news/".Str::slug($request->judul, '-')."/ \n" : "\n";
                 $message   .= "Instagram : https://www.instagram.com/laskar.pln/ \n";
                 $message   .= "Website : https://laskarpln.id/ \n";
                 $message   .= "Pendaftaran : https://laskarpln.id/register_members \n";
@@ -485,7 +493,7 @@ class NewsController extends Controller
         ->where('tgl_tayang_berakhir','>=', $now->toDateString())
         ->first();
 
-        if($items->is_public == 'Tidak' && !Auth::check()){
+        if($items->is_public == 'Tidak' && !Auth::check() || $items->is_show == 'Tidak'){
             return abort(404);
         }
         // dd($items);

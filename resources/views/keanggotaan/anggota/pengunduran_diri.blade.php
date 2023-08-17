@@ -38,7 +38,7 @@
             <td style="width: 10px;"></td>
             <td>:</td>
             <td style="width: 10px;"></td>
-            <td>{{$users->no_anggota}}</td>
+            <td></td>
         </tr>
         <tr>
             <td>Unit</td>

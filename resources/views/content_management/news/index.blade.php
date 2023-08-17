@@ -36,6 +36,9 @@
                                         </th>
                                         <th> 
                                         </th>
+                                        @can('content_management_news-show')
+                                            <th class="py-2"></th>
+                                        @endcan
                                         @can('content_management_news-edit')
                                             <th class="py-2"></th>
                                         @endcan
@@ -54,6 +57,9 @@
                                         <th class="py-2">Tgl Tayang Mulai</th>
                                         <th class="py-2">Tgl Tayang Berakhir</th>
                                         <th class="py-2">Penulis</th>
+                                        @can('content_management_news-show')
+                                            <th class="py-2"></th>
+                                        @endcan
                                         @can('content_management_news-edit')
                                             <th class="py-2"></th>
                                         @endcan
@@ -114,6 +120,15 @@
                 {data: 'tgl_tayang_mulai', name: 'tgl_tayang_mulai'},
                 {data: 'tgl_tayang_berakhir', name: 'tgl_tayang_berakhir'},
                 {data: 'penulis', name: 'penulis'},
+                @can('content_management_news-show')
+                    {
+                        data: 'show', 
+                        name: 'show',
+                        orderable: false,
+                        searchable: false,
+                        width: '1%'
+                    },
+                @endcan
                 @can('content_management_news-edit')
                     {
                         data: 'edit', 
