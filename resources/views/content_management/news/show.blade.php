@@ -30,8 +30,8 @@
                         <h2 class="card-title text-primary fw-bold">{{$item->judul}}</h2>
                         <span class="text-muted">Penulis {{$item->penulis}}</span>
                         <p class="card-description"> 
-                            @if (count($item->documentation) > 0)
-                                <img src="{{$item->documentation[0]->photos}}" class="card-img-top" alt="...">
+                            @if ($image != null)
+                                <img src="{{$image->photos}}" class="card-img-top" alt="...">
                             @endif
                             {!!$item->berita!!} 
                             

@@ -10,6 +10,7 @@ use App\Http\Controllers\Evote\VoterController;
 use App\Http\Controllers\Keanggotaan\AnggotaController;
 use App\Http\Controllers\Keanggotaan\ProcessMemberController;
 use App\Http\Controllers\Keanggotaan\RegistrasiController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Master\BankController;
 use App\Http\Controllers\Master\CityController;
 use App\Http\Controllers\Master\DpcController;
@@ -39,9 +40,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', [LandingController::class, 'index']);
+Route::get('/signin', function () {
     return view('auth.email_otp');
-    // return view('evote.election.get_vote');
+    // return view('evote.election.get_vote')
 })->name('root');
 
 Auth::routes();

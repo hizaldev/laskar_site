@@ -493,6 +493,9 @@ class NewsController extends Controller
         ->where('tgl_tayang_berakhir','>=', $now->toDateString())
         ->first();
 
+        $image = NewsDocumentation::where('news_id', $items->id)->where('tipe', 'Images')->where('initial', 1)->first();
+        // $file = NewsDocumentation::where('news_id', $items->id)->where('tipe', 'Images')->where('initial', 1)->first();
+
         if($items->is_public == 'Tidak' && !Auth::check() || $items->is_show == 'Tidak'){
             return abort(404);
         }
@@ -544,6 +547,7 @@ class NewsController extends Controller
             'most_popular' => $most_popular,
             'baca_juga' => $bacaJuga,
             'event' => $event,
+            'image' => $image,
         ]);
     }
 

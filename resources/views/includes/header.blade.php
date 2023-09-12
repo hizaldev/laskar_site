@@ -10,11 +10,8 @@
             <div class="d-flex justify-content-evenly">
                 
                     <li class="nav-item d-flex justify-content-evenly">
-                        @if (Route::has('register'))
-                            <a class="nav-link" href="{{ route('register_members.index') }}">{{ __('Register') }}</a>
-                        @endif
                         @if (Route::has('login'))
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ url('signin') }}">{{ __('Login') }}</a>
                         @endif
                     </li>
               
