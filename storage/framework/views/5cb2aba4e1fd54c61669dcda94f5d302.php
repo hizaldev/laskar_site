@@ -78,6 +78,9 @@
                         'master_bank-list',
                         'master_unit-list',
                         'master_serikat_pekerja-list',
+                        'master_jenjang_jabatan-list',
+                        'master_grade-list',
+                        'master_department-list',
                        
                     ])): ?>
                         <li class="nav-item dropdown">
@@ -114,6 +117,15 @@
                                 <?php endif; ?>
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_serikat_pekerja-list')): ?>
                                     <a class="dropdown-item" href="<?php echo e(route('unions.index')); ?>">Serikat Pekerja</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_jenjang_jabatan-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('level_positions.index')); ?>">Jenjang Jabatan</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_grade-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('grades.index')); ?>">Data Grade</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_department-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('departments.index')); ?>">Department Laskar</a>
                                 <?php endif; ?>
                             </div>
                             

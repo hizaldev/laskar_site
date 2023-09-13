@@ -11,11 +11,8 @@
             <div class="d-flex justify-content-evenly">
                 
                     <li class="nav-item d-flex justify-content-evenly">
-                        <?php if(Route::has('register')): ?>
-                            <a class="nav-link" href="<?php echo e(route('register_members.index')); ?>"><?php echo e(__('Register')); ?></a>
-                        <?php endif; ?>
                         <?php if(Route::has('login')): ?>
-                            <a class="nav-link" href="<?php echo e(route('login')); ?>"><?php echo e(__('Login')); ?></a>
+                            <a class="nav-link" href="<?php echo e(url('signin')); ?>"><?php echo e(__('Login')); ?></a>
                         <?php endif; ?>
                     </li>
               

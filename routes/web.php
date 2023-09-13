@@ -13,8 +13,11 @@ use App\Http\Controllers\Keanggotaan\RegistrasiController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Master\BankController;
 use App\Http\Controllers\Master\CityController;
+use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\DpcController;
 use App\Http\Controllers\Master\DpdController;
+use App\Http\Controllers\Master\GradeController;
+use App\Http\Controllers\Master\LevelJabatanController;
 use App\Http\Controllers\Master\ReligionController;
 use App\Http\Controllers\Master\SerikatPekerjaController;
 use App\Http\Controllers\Master\SizeController;
@@ -80,6 +83,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('status_members', StatusMemberController::class);
     Route::resource('units', UnitController::class);
     Route::resource('unions', SerikatPekerjaController::class);
+    Route::resource('level_positions', LevelJabatanController::class);
+    Route::resource('grades', GradeController::class);
+    Route::resource('departments', DepartmentController::class);
     
     // keanggotaan
     Route::resource('process_members', ProcessMemberController::class);

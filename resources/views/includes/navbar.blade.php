@@ -78,6 +78,9 @@
                         'master_bank-list',
                         'master_unit-list',
                         'master_serikat_pekerja-list',
+                        'master_jenjang_jabatan-list',
+                        'master_grade-list',
+                        'master_department-list',
                        
                     ])
                         <li class="nav-item dropdown">
@@ -114,6 +117,15 @@
                                 @endcan
                                 @can('master_serikat_pekerja-list')
                                     <a class="dropdown-item" href="{{ route('unions.index') }}">Serikat Pekerja</a>
+                                @endcan
+                                @can('master_jenjang_jabatan-list')
+                                    <a class="dropdown-item" href="{{ route('level_positions.index') }}">Jenjang Jabatan</a>
+                                @endcan
+                                @can('master_grade-list')
+                                    <a class="dropdown-item" href="{{ route('grades.index') }}">Data Grade</a>
+                                @endcan
+                                @can('master_department-list')
+                                    <a class="dropdown-item" href="{{ route('departments.index') }}">Department Laskar</a>
                                 @endcan
                             </div>
                             
