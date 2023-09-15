@@ -18,6 +18,7 @@ use App\Http\Controllers\Master\DpcController;
 use App\Http\Controllers\Master\DpdController;
 use App\Http\Controllers\Master\GradeController;
 use App\Http\Controllers\Master\LevelJabatanController;
+use App\Http\Controllers\Master\PendidikanTerakhirController;
 use App\Http\Controllers\Master\ReligionController;
 use App\Http\Controllers\Master\SerikatPekerjaController;
 use App\Http\Controllers\Master\SizeController;
@@ -86,6 +87,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('level_positions', LevelJabatanController::class);
     Route::resource('grades', GradeController::class);
     Route::resource('departments', DepartmentController::class);
+    Route::resource('last_educations', PendidikanTerakhirController::class);
     
     // keanggotaan
     Route::resource('process_members', ProcessMemberController::class);

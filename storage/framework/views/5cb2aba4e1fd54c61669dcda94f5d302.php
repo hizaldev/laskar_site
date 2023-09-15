@@ -127,6 +127,9 @@
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_department-list')): ?>
                                     <a class="dropdown-item" href="<?php echo e(route('departments.index')); ?>">Department Laskar</a>
                                 <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_pendidikan_terakhir-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('last_educations.index')); ?>">Pendidikan Terakhir</a>
+                                <?php endif; ?>
                             </div>
                             
                         </li>

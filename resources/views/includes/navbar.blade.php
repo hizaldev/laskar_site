@@ -127,6 +127,9 @@
                                 @can('master_department-list')
                                     <a class="dropdown-item" href="{{ route('departments.index') }}">Department Laskar</a>
                                 @endcan
+                                @can('master_pendidikan_terakhir-list')
+                                    <a class="dropdown-item" href="{{ route('last_educations.index') }}">Pendidikan Terakhir</a>
+                                @endcan
                             </div>
                             
                         </li>
