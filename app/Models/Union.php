@@ -13,10 +13,15 @@ class Union extends Model
 {
     use HasFactory, SoftDeletes, Blameable, HasUuids, HasRoles;
 
-    protected $fillable =[
+    protected $fillable = [
         'serikat_pekerja',
         'alamat',
         'latitude',
         'longitude',
     ];
+
+    public function registerMember()
+    {
+        return $this->belongsTo(RegisterMembers::class);
+    }
 }

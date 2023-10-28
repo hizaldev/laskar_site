@@ -12,7 +12,7 @@ class RegisterMembers extends Model
     use HasFactory, SoftDeletes, HasUuids;
 
     protected $table = 'register_members';
-    
+
     protected $fillable = [
         'no_pendaftaran',
         'unit_id',
@@ -36,11 +36,23 @@ class RegisterMembers extends Model
         'union_id',
     ];
 
-    public function unit(){
+    public function unit()
+    {
         return $this->belongsTo(Unit::class);
     }
 
-    public function size(){
+    public function size()
+    {
         return $this->belongsTo(Size::class);
+    }
+
+    public function serikat()
+    {
+        return $this->hasOne(Union::class, 'id', 'union_id');
+    }
+
+    public function member()
+    {
+        return $this->belongsTo(member::class);
     }
 }

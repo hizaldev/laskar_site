@@ -32,6 +32,8 @@ class User extends Authenticatable
         'is_dpp',
         'status',
         'tipe_akun',
+        'fcm_token',
+        'keterangan',
     ];
 
     /**

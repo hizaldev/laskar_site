@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Absensi\AbsensiController;
 use App\Http\Controllers\Auth\AuthOtpController;
 use App\Http\Controllers\CaptchaValidationController;
 use App\Http\Controllers\ContentManagement\CategoryNewsController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Master\TypeBloodController;
 use App\Http\Controllers\Master\UnitController;
 use App\Http\Controllers\Settings\PermissionController;
 use App\Http\Controllers\Settings\RoleController;
+use App\Http\Controllers\Settings\UpdateDataController;
 use App\Http\Controllers\Settings\UserController;
 use App\Http\Controllers\Settings\WhatsappGroupController;
 use App\Models\NewsCategory;
@@ -61,14 +63,17 @@ Route::get('/evote/{id}', [ElectionController::class, 'CollectVote'])->name('evo
 Route::post('store_vote', [ElectionController::class, 'store_vote'])->name('evotes.store_vote');
 Route::get('/read_news/{id}', [NewsController::class, 'readNews'])->name('news.read_news');
 
+Route::get('ceklok/{id}', [AbsensiController::class, 'ceklok'])->name('attendances.ceklok');
+Route::post('storeCeklok', [AbsensiController::class, 'storeCeklok'])->name('attendances.storeCeklok');
 
 
-Route::group(['middleware' => ['auth']], function() {
+
+Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permisions', PermissionController::class);
     Route::resource('users', UserController::class);
     Route::resource('whatsapp_groups', WhatsappGroupController::class);
-    
+
     // Dashboard
     Route::get('/dashboard_ellection', [ElectionController::class, 'dashboardEvote'])->name('evotes.dashboard_evote');
     Route::get('/dashboard_laskar', [AnggotaController::class, 'dashboardlaskar'])->name('members.dashboard_laskar');
@@ -88,7 +93,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('grades', GradeController::class);
     Route::resource('departments', DepartmentController::class);
     Route::resource('last_educations', PendidikanTerakhirController::class);
-    
+
     // keanggotaan
     Route::resource('process_members', ProcessMemberController::class);
     Route::resource('members', AnggotaController::class);
@@ -113,12 +118,29 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/get_category', [CategoryNewsController::class, 'getCategories'])->name('news_category.getCategories');
     // Route::delete('/destroyDocumentaion/{id}', [NewsController::class, 'destroyDocumentation'])->name('news.destroyDocumentation');
     Route::get('/destroyDocumentaion/{id}', [NewsController::class, 'destroyDocumentation'])->name('news.destroyDocumentation');
-    
+
+    // Aplikasi
+    Route::resource('attendances', AbsensiController::class);
+    Route::delete('destroyCeklok/{id}', [AbsensiController::class, 'destroyCeklok'])->name('attendances.destroyCeklok');
+    Route::get('/print_absensi/{id}', [AbsensiController::class, 'printAbsensi'])->name('attendances.printAbsensi');
+    Route::get('generateQr/{id}', [AbsensiController::class, 'generateQr'])->name('attendances.generateQr');
+    Route::get('getDataKehadiran', [AbsensiController::class, 'getDataKehadiran'])->name('attendances.getDataKehadiran');
+    Route::get('/searchAbsensi', [AbsensiController::class, 'searchAbsensi'])->name('searchAbsensi');
+
+
+
+
+
+
 
 
 
     // report
     Route::get('report/export/', [AnggotaController::class, 'export'])->name('exportMember');
+
+    // custom modul
+    Route::put('/update_anggota/{id}', [UpdateDataController::class, 'update_anggota'])->name('update_profile.update__angggota');
+    Route::get('/update_keanggotaan', [UpdateDataController::class, 'index'])->name('update_profile');
 
 
 

@@ -35,3 +35,11 @@
     </div>
 </div>
 @endsection
+
+@push('addon-script')
+    {{-- @if (session()->has('url'))
+        <script>
+            window.open('{{session()->get('url')}}', "_blank");
+        </script>
+    @endif --}}
+@endpush

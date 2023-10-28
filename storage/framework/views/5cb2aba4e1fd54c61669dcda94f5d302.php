@@ -158,6 +158,25 @@
                         </li>
                     <?php endif; ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
+                        'aplikasi_absensi-list',
+                        'aplikasi_absensi-list-user',
+                    ])): ?>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fa-solid fa-folder-open"></i> Aplikasi
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
+                                    'aplikasi_absensi-list',
+                                    'aplikasi_absensi-list-user',
+                                ])): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('attendances.index')); ?>">Absensi</a>
+                                <?php endif; ?>
+                            </div>
+
+                        </li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
                         'keanggotaan_anggota-list',
                         'keanggotaan_proses_daftar-list',
                     ])): ?>

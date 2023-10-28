@@ -32,13 +32,13 @@ class AnggotaController extends Controller
 
     function __construct()
     {
-        $this->middleware('permission:keanggotaan_anggota-list|permission-create|keanggotaan_anggota-edit|keanggotaan_anggota-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:keanggotaan_anggota-create', ['only' => ['create','store']]);
-        $this->middleware('permission:keanggotaan_anggota-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:keanggotaan_anggota-list|permission-create|keanggotaan_anggota-edit|keanggotaan_anggota-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:keanggotaan_anggota-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:keanggotaan_anggota-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:keanggotaan_anggota-delete', ['only' => ['destroy']]);
         $this->middleware('permission:keanggotaan_anggota-show', ['only' => ['show']]);
         $this->middleware('permission:dashboard-dashboard_anggota_show', ['only' => ['dashboardlaskar']]);
-        $this->middleware('permission:keanggotaan_anggota-print', ['only' => ['PrintUndurDiri','PrintPendaftaran','PrintSuratKuasa','PrintTemplate']]);
+        $this->middleware('permission:keanggotaan_anggota-print', ['only' => ['PrintUndurDiri', 'PrintPendaftaran', 'PrintSuratKuasa', 'PrintTemplate']]);
     }
     /**
      * Display a listing of the resource.
@@ -47,59 +47,70 @@ class AnggotaController extends Controller
      */
     public function index()
     {
-        $data = Member::with(['unit', 'size', 'status', 'dpc', 'dpd'])->get();
+        $data = Member::with(['unit', 'size', 'status', 'dpc', 'dpd', 'register'])->orderBy('created_at', 'desc')->get();
         // dd($data);
-        if(request()->ajax()){
+        if (request()->ajax()) {
             return DataTables::of($data)
-            // ->editColumn('created_at', function($data){ $formatedDate = $data->created_at != null ?Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y') : null; return $formatedDate; })
-            // ->editColumn('tgl_pendaftaran', function($data){$formatedDate = $data->tgl_pendaftaran != null ? Carbon::createFromFormat('Y-m-d H:i:s', $data->tgl_pendaftaran )->format('d-m-Y') : null; return $formatedDate; })
-            ->addColumn('print', function($item){
-                return '
+                // ->editColumn('created_at', function($data){ $formatedDate = $data->created_at != null ?Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y') : null; return $formatedDate; })
+                // ->editColumn('tgl_pendaftaran', function($data){$formatedDate = $data->tgl_pendaftaran != null ? Carbon::createFromFormat('Y-m-d H:i:s', $data->tgl_pendaftaran )->format('d-m-Y') : null; return $formatedDate; })
+                ->addColumn('serikat', function ($item) {
+                    if ($item->register != null) {
+                        if ($item->register->is_out_serikat == "Ya") {
+                            return $item->register->serikat->serikat_pekerja;
+                        } else {
+                            return "Tidak";
+                        }
+                    } else {
+                        return 'Data Anggota lama';
+                    }
+                })
+                ->addColumn('print', function ($item) {
+                    return '
                 <div class="dropdown">
                     <button class="btn btn-secondary btn-sm text-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-solid fa-print"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="'.route("$this->route.PrintUndurDiri", $item->id).'">Pengunduran Diri</a></li>
-                        <li><a class="dropdown-item" href="'.route("$this->route.PrintPendaftaran", $item->id).'">Pendaftaran</a></li>
-                        <li><a class="dropdown-item" href="'.route("$this->route.PrintSuratKuasa", $item->id).'">Surat Kuasa Pemotongan</a></li>
-                        <li><a class="dropdown-item" href="'.route("$this->route.PrintTemplate", $item->id).'">Template Materai</a></li>
+                        <li><a class="dropdown-item" href="' . route("$this->route.PrintUndurDiri", $item->id) . '">Pengunduran Diri</a></li>
+                        <li><a class="dropdown-item" href="' . route("$this->route.PrintPendaftaran", $item->id) . '">Pendaftaran</a></li>
+                        <li><a class="dropdown-item" href="' . route("$this->route.PrintSuratKuasa", $item->id) . '">Surat Kuasa Pemotongan</a></li>
+                        <li><a class="dropdown-item" href="' . route("$this->route.PrintTemplate", $item->id) . '">Template Materai</a></li>
                     </ul>
                 </div>
                 ';
-            })
-            ->addColumn('show', function($item){
-                return '
+                })
+                ->addColumn('show', function ($item) {
+                    return '
                 
-                    <a class="btn btn-primary btn-sm text-white" href="'.route("$this->route.show", $item->id).'">
+                    <a class="btn btn-primary btn-sm text-white" href="' . route("$this->route.show", $item->id) . '">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </a>
                 ';
-            })
-            ->addColumn('edit', function($item){
-                return '
+                })
+                ->addColumn('edit', function ($item) {
+                    return '
                 
-                    <a class="btn btn-success btn-sm text-white" href="'.route("$this->route.edit", $item->id).'">
+                    <a class="btn btn-success btn-sm text-white" href="' . route("$this->route.edit", $item->id) . '">
                         <i class="fa-solid fa-pencil"></i>
                     </a>
                 ';
-            })
-            ->addColumn('delete', function($item){
-                return '
-                    <form action="'. route("$this->route.destroy", $item->id).'" method="POST" id="form" class="form-inline" onSubmit="if (confirm(`Apa anda yakin menghapus data ini? data ini mungkin akan berpengaruh pada data transaksi aplikasi`)) run; return false">
-                        '. method_field('delete') . csrf_field().'
+                })
+                ->addColumn('delete', function ($item) {
+                    return '
+                    <form action="' . route("$this->route.destroy", $item->id) . '" method="POST" id="form" class="form-inline" onSubmit="if (confirm(`Apa anda yakin menghapus data ini? data ini mungkin akan berpengaruh pada data transaksi aplikasi`)) run; return false">
+                        ' . method_field('delete') . csrf_field() . '
                         <button type="submit" class="btn btn-danger btn-sm text-white">
                         <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </form>
                 ';
-            })
-            ->addIndexColumn()
-            ->rawColumns(['print','show','edit', 'delete'])
-            ->make();
+                })
+                ->addIndexColumn()
+                ->rawColumns(['print', 'show', 'edit', 'delete', 'serikat'])
+                ->make();
         }
         //dd($data);
-        ConstantController::logger('-', $this->route.'.index', 'list');
+        ConstantController::logger('-', $this->route . '.index', 'list');
         return view("$this->path_view.index");
     }
 
@@ -110,7 +121,7 @@ class AnggotaController extends Controller
      */
     public function create()
     {
-        ConstantController::logger('-', $this->route.'.create', 'open form create');
+        ConstantController::logger('-', $this->route . '.create', 'open form create');
         return view("$this->path_view.create");
     }
 
@@ -126,18 +137,18 @@ class AnggotaController extends Controller
             'bank' => 'required|unique:Banks,bank',
         ]);
 
-        try{
+        try {
             $data['bank'] = $request->bank;
             $data['description'] = $request->description;
             $create = Member::create($data);
-            ConstantController::logger($create->getOriginal(), $this->route.'.store', 'insert success');
+            ConstantController::logger($create->getOriginal(), $this->route . '.store', 'insert success');
             ConstantController::successAlert();
-        } catch(Exception $e){
-            ConstantController::logger($e->getMessage(), $this->route.'.store', 'insert error');
+        } catch (Exception $e) {
+            ConstantController::logger($e->getMessage(), $this->route . '.store', 'insert error');
             ConstantController::errorAlert($e->getMessage());
         }
 
-        return redirect()->route($this->route.'.index');
+        return redirect()->route($this->route . '.index');
     }
 
     /**
@@ -149,9 +160,9 @@ class AnggotaController extends Controller
     public function show($id)
     {
         $items = Member::findOrFail($id);
-        ConstantController::logger('-', $this->route.'.edit', 'detail id '.$id);
+        ConstantController::logger('-', $this->route . '.edit', 'detail id ' . $id);
         return view("$this->path_view.show", [
-            'item'=>$items,
+            'item' => $items,
         ]);
     }
 
@@ -166,23 +177,23 @@ class AnggotaController extends Controller
         $items = Member::findOrFail($id);
         $dpd = Dpd::orderBy('dpd', 'asc')->get();
         $dpc = Dpc::orderBy('dpc', 'asc')->get();
-        $agama = Religion::orderBy('agama','asc')->get();
-        $size = Size::orderBy('ukuran','asc')->get();
+        $agama = Religion::orderBy('agama', 'asc')->get();
+        $size = Size::orderBy('ukuran', 'asc')->get();
         $type_blood = TypeBlood::orderBy('golongan_darah')->get();
-        $bank = Bank::orderBy('bank','asc')->get();
-        $unit = Unit::orderBy('unit','asc')->get();
-        $status = StatusMember::orderBy('status','asc')->get();
-        ConstantController::logger('-', $this->route.'.edit', 'open form edit');
+        $bank = Bank::orderBy('bank', 'asc')->get();
+        $unit = Unit::orderBy('unit', 'asc')->get();
+        $status = StatusMember::orderBy('status', 'asc')->get();
+        ConstantController::logger('-', $this->route . '.edit', 'open form edit');
         return view("$this->path_view.edit", [
-            'item'=>$items,
-            'dpd'=>$dpd,
-            'dpc'=>$dpc,
-            'agama'=>$agama,
-            'size'=>$size,
-            'type_blood'=>$type_blood,
-            'bank'=>$bank,
-            'unit'=>$unit,
-            'status'=>$status,
+            'item' => $items,
+            'dpd' => $dpd,
+            'dpc' => $dpc,
+            'agama' => $agama,
+            'size' => $size,
+            'type_blood' => $type_blood,
+            'bank' => $bank,
+            'unit' => $unit,
+            'status' => $status,
         ]);
     }
 
@@ -214,7 +225,7 @@ class AnggotaController extends Controller
             'status_id' => 'required',
         ]);
 
-        try{
+        try {
             $data['unit_id'] = $request->unit_id;
             $data['golongan_darah'] = $request->golongan_darah;
             $data['jenis_kelamin'] = $request->jenis_kelamin;
@@ -236,14 +247,14 @@ class AnggotaController extends Controller
             $item = Member::findOrFail($id);
             $item->update($data);
 
-            ConstantController::logger($item->getOriginal(), $this->route.'.update', 'update success');
+            ConstantController::logger($item->getOriginal(), $this->route . '.update', 'update success');
             ConstantController::successAlert();
-        } catch(Exception $e){
-            ConstantController::logger($item->getMessage(), $this->route.'.update', 'update error');
+        } catch (Exception $e) {
+            ConstantController::logger($item->getMessage(), $this->route . '.update', 'update error');
             ConstantController::errorAlert($e->getMessage());
         }
 
-        return redirect()->route($this->route.'.index');
+        return redirect()->route($this->route . '.index');
     }
 
     /**
@@ -256,12 +267,13 @@ class AnggotaController extends Controller
     {
         $item = Member::findOrFail($id);
         $item->delete();
-        ConstantController::logger($item->getOriginal(), $this->route.'.delete', 'delete success');
+        ConstantController::logger($item->getOriginal(), $this->route . '.delete', 'delete success');
         ConstantController::successDeleteAlert();
-         return redirect()->route($this->route.'.index');
+        return redirect()->route($this->route . '.index');
     }
 
-    public static function createUser($member){
+    public static function createUser($member)
+    {
         $unit = Unit::where('id', $member->unit_id)->first();
         $data['user_id'] = $member->id;
         $data['name'] = $member->nama_lengkap;
@@ -277,100 +289,105 @@ class AnggotaController extends Controller
         $user->assignRole([3]);
     }
 
-    public function PrintUndurDiri($id){
+    public function PrintUndurDiri($id)
+    {
         $member = Member::with(['unit'])->findOrFail($id);
         // dd(asset('test'));
         // dd(storage_path());
         $data = [
             'date' => date('m/d/Y'),
             'users' => $member
-        ]; 
-            
+        ];
+
         $pdf = Pdf::loadView("$this->path_view.pengunduran_diri", $data);
-     
+
         return $pdf->download("Formulir Pengunduran Diri $member->nama_lengkap.pdf");
     }
 
-    public function PrintPendaftaran($id){
+    public function PrintPendaftaran($id)
+    {
         $member = Member::with(['unit', 'size'])->findOrFail($id);
         $data = [
             'date' => date('m/d/Y'),
             'users' => $member
-        ]; 
-            
+        ];
+
         $pdf = Pdf::loadView("$this->path_view.pendaftaran", $data);
-     
+
         return $pdf->download("Formulir Pendaftaran $member->nama_lengkap.pdf");
     }
 
-    public function PrintSuratKuasa($id){
+    public function PrintSuratKuasa($id)
+    {
         $member = Member::with(['unit', 'size'])->findOrFail($id);
         $data = [
             'date' => date('m/d/Y'),
             'users' => $member
-        ]; 
-            
+        ];
+
         $pdf = Pdf::loadView("$this->path_view.surat_kuasa", $data);
-     
+
         return $pdf->download("Surat Kuasa Pemotongan Iuran Anggota a/n $member->nama_lengkap.pdf");
     }
 
-    public function PrintTemplate($id){
+    public function PrintTemplate($id)
+    {
         $member = Member::with(['unit', 'size'])->findOrFail($id);
         $data = [
             'date' => date('m/d/Y'),
             'users' => $member
-        ]; 
-            
+        ];
+
         $pdf = Pdf::loadView("$this->path_view.template_materai", $data);
-     
+
         return $pdf->download("Surat Kuasa Pemotongan Iuran Anggota a/n $member->nama_lengkap.pdf");
     }
 
     public function getAnggota()
     {
-        $members = Member::where('nama_lengkap', 'LIKE', '%'. request()->get('q'). '%')->get(); 
+        $members = Member::where('nama_lengkap', 'LIKE', '%' . request()->get('q') . '%')->get();
         return response()->json($members);
     }
 
-    public function export() 
-    {   
+    public function export()
+    {
         $now = Carbon::now();
         return Excel::download(new AnggotaExport, "Export Data Anggota Per $now.xlsx");
     }
 
     // start dashboard
 
-        public function dashboardlaskar(Request $request){
-            $member = Member::all();
-            $sebaranAnggota = $member->where('status_id', '994f84dc-e703-4a2e-9df2-c49571f31498')->count();
-            $anggotaPensiun = $member->where('status_id', '994f863f-8d04-42d6-afd5-1bcc7e11a083')->count();
-            $sebaranlokasiAnggota = DB::table('members')
-            ->select('dpc','dpc_id', DB::raw('count(*) as total'))
+    public function dashboardlaskar(Request $request)
+    {
+        $member = Member::all();
+        $sebaranAnggota = $member->where('status_id', '994f84dc-e703-4a2e-9df2-c49571f31498')->count();
+        $anggotaPensiun = $member->where('status_id', '994f863f-8d04-42d6-afd5-1bcc7e11a083')->count();
+        $sebaranlokasiAnggota = DB::table('members')
+            ->select('dpc', 'dpc_id', DB::raw('count(*) as total'))
             ->leftjoin('dpc', function ($join) {
                 $join->on('members.dpc_id', '=', 'dpc.id')
-                ->whereNull('dpc.deleted_at');
+                    ->whereNull('dpc.deleted_at');
             })
             ->groupBy('members.dpc_id')
             ->where('members.status_id', '994f84dc-e703-4a2e-9df2-c49571f31498')
             ->whereNull('members.deleted_at')
             ->get();
 
-            $sebaranunitAnggota = DB::table('members')
-            ->select('unit','unit_id', DB::raw('count(*) as total'))
+        $sebaranunitAnggota = DB::table('members')
+            ->select('unit', 'unit_id', DB::raw('count(*) as total'))
             ->leftjoin('units', function ($join) {
                 $join->on('members.unit_id', '=', 'units.id')
-                ->whereNull('units.deleted_at');
+                    ->whereNull('units.deleted_at');
             })
             ->groupBy('members.unit_id')
             ->where('members.status_id', '994f84dc-e703-4a2e-9df2-c49571f31498')
             ->whereNull('members.deleted_at')
             ->get();
-            // dd($sebaranunitAnggota);
+        // dd($sebaranunitAnggota);
 
-            // $sebaranunitAnggota->toSql();
+        // $sebaranunitAnggota->toSql();
 
-            $sebaranUmur = DB::select("
+        $sebaranUmur = DB::select("
                 select 
                     count(if(umur < 21,1,null)) as 'bawah_dua_satu', 
                     count(if(umur between 21 and 29,1,null)) as 'dua_satu_to_dua_sembilan',
@@ -384,15 +401,15 @@ class AnggotaController extends Controller
                     where status_id = '994f84dc-e703-4a2e-9df2-c49571f31498'
                 ) as dummy_table
             ");
-            // dd($sebaranlokasiAnggota);
-            return view("$this->path_view.dashboard", [
-                'sebaran_anggota'=>$sebaranAnggota,
-                'anggota_pensiun'=>$anggotaPensiun,
-                'sebaranUmur'=>$sebaranUmur,
-                'sebaran_dpc_anggota'=>$sebaranlokasiAnggota,
-                'sebaran_unit_anggota'=>$sebaranunitAnggota,
-            ]); 
-        }
+        // dd($sebaranlokasiAnggota);
+        return view("$this->path_view.dashboard", [
+            'sebaran_anggota' => $sebaranAnggota,
+            'anggota_pensiun' => $anggotaPensiun,
+            'sebaranUmur' => $sebaranUmur,
+            'sebaran_dpc_anggota' => $sebaranlokasiAnggota,
+            'sebaran_unit_anggota' => $sebaranunitAnggota,
+        ]);
+    }
 
     // end dashboard
 }

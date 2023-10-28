@@ -41,28 +41,40 @@ class Member extends Model
         'tgl_pendaftaran',
     ];
 
-    public function unit(){
+    public function unit()
+    {
         return $this->belongsTo(Unit::class);
     }
 
-    public function size(){
+    public function size()
+    {
         return $this->belongsTo(Size::class);
     }
 
-    public function status(){
+    public function status()
+    {
         return $this->belongsTo(StatusMember::class);
     }
-    public function dpd(){
+    public function dpd()
+    {
         return $this->belongsTo(Dpd::class);
     }
-    public function dpc(){
+    public function dpc()
+    {
         return $this->belongsTo(Dpc::class);
     }
-    public function bank(){
+    public function bank()
+    {
         return $this->belongsTo(Bank::class);
     }
 
-    public function User(){
+    public function User()
+    {
         return $this->hasOne(User::class, 'user_id', 'id');
+    }
+
+    public function register()
+    {
+        return $this->hasOne(RegisterMembers::class, 'nipeg', 'nipeg');
     }
 }
