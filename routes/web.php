@@ -6,6 +6,8 @@ use App\Http\Controllers\CaptchaValidationController;
 use App\Http\Controllers\ContentManagement\CategoryNewsController;
 use App\Http\Controllers\ContentManagement\LinksController;
 use App\Http\Controllers\ContentManagement\NewsController;
+use App\Http\Controllers\Dokumen\DokumenController;
+use App\Http\Controllers\Dokumen\PencarianDokumenController;
 use App\Http\Controllers\Evote\ElectionController;
 use App\Http\Controllers\Evote\VoterController;
 use App\Http\Controllers\Keanggotaan\AnggotaController;
@@ -18,8 +20,10 @@ use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\DpcController;
 use App\Http\Controllers\Master\DpdController;
 use App\Http\Controllers\Master\GradeController;
+use App\Http\Controllers\Master\JenisDocumentController;
 use App\Http\Controllers\Master\LevelJabatanController;
 use App\Http\Controllers\Master\PendidikanTerakhirController;
+use App\Http\Controllers\Master\PropertiesDocumentController;
 use App\Http\Controllers\Master\ReligionController;
 use App\Http\Controllers\Master\SerikatPekerjaController;
 use App\Http\Controllers\Master\SizeController;
@@ -73,6 +77,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('permisions', PermissionController::class);
     Route::resource('users', UserController::class);
     Route::resource('whatsapp_groups', WhatsappGroupController::class);
+    Route::put('/update_profile/{id}', [UserController::class, 'UpdateProfile'])->name('users.update_profile_anggota');
+
 
     // Dashboard
     Route::get('/dashboard_ellection', [ElectionController::class, 'dashboardEvote'])->name('evotes.dashboard_evote');
@@ -93,6 +99,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('grades', GradeController::class);
     Route::resource('departments', DepartmentController::class);
     Route::resource('last_educations', PendidikanTerakhirController::class);
+    Route::resource('jenis_documents', JenisDocumentController::class);
+    Route::resource('properties_documents', PropertiesDocumentController::class);
 
     // keanggotaan
     Route::resource('process_members', ProcessMemberController::class);
@@ -126,13 +134,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('generateQr/{id}', [AbsensiController::class, 'generateQr'])->name('attendances.generateQr');
     Route::get('getDataKehadiran', [AbsensiController::class, 'getDataKehadiran'])->name('attendances.getDataKehadiran');
     Route::get('/searchAbsensi', [AbsensiController::class, 'searchAbsensi'])->name('searchAbsensi');
-
-
-
-
-
-
-
+    Route::resource('documents', DokumenController::class);
+    Route::resource('search_documents', PencarianDokumenController::class);
+    Route::post('storeCategoryDokumen', [JenisDocumentController::class, 'storeCategoryDokumen'])->name('jenis_documents.storeCategoryDokumen');
+    Route::get('/get_category_dokumen', [JenisDocumentController::class, 'getCategories'])->name('jenis_documents.getCategories');
+    Route::get('showDocument/{id}', [DokumenController::class, 'showDocument'])->name('documents.showDocument');
+    Route::get('storeLogPreview/{id}', [JenisDocumentController::class, 'storeLogPreview'])->name('documents.storeLogPreview');
+    Route::get('storeLogDownload/{id}', [JenisDocumentController::class, 'storeLogDownload'])->name('documents.storeLogDownload');
+    Route::get('showHistory/{id}', [DokumenController::class, 'showHistory'])->name('documents.showHistory');
 
 
     // report

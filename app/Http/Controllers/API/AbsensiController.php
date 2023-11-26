@@ -22,10 +22,10 @@ class AbsensiController extends Controller
         $user = $request->user();
 
         $user = User::find($user->id);
-        $attendance = Attendance::when($user->can('aplikasi_absensi-list-user'), function ($query, $user) {
-            return $query->where('user_id', $user->user_id);
-        })
-            ->get();
+        $attendance = Attendance::get();
+        if ($user->can('aplikasi_absensi-list-user')) {
+            $attendance->where('user_id', $user->user_id);
+        }
         if ($attendance) {
             return ResponseFormatter::success(
                 $attendance,
@@ -236,5 +236,30 @@ class AbsensiController extends Controller
         $pdf = Pdf::loadView("aplikasi.absensi.print_absensi", $data);
 
         return $pdf->stream("Absensi $attendance->agenda $attendance->tgl_agenda.pdf");
+    }
+
+    public function getDataSearchAbsensi(Request $request)
+    {
+
+        $user = $request->user();
+        $agenda = $request->input('agenda');
+        $agenda != null ? $agenda : $agenda = 'dsdsd3ed';
+        $user = User::find($user->id);
+        $attendance = Attendance::where('agenda', 'like', "%$agenda%")->get();
+        if ($user->can('aplikasi_absensi-list-user')) {
+            $attendance->where('user_id', $user->user_id);
+        }
+        if ($attendance) {
+            return ResponseFormatter::success(
+                $attendance,
+                'Data transaksi berhasil diambil'
+            );
+        } else {
+            return ResponseFormatter::error(
+                null,
+                'Data transaksi gagal diambil',
+                404
+            );
+        }
     }
 }

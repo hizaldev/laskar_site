@@ -32,6 +32,28 @@
                             </div>
                         </div>
                         <div class="form-group mb-3">
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control form-control-sm @error('email') is-invalid @enderror" name="email" value="{{$item->email}}" id="email" placeholder="Masukan Email">
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="form-group mb-3">
+                                <label for="no_telpon">No Tlp/ Wa</label>
+                                <input type="number" class="form-control form-control-sm @error('no_telpon') is-invalid @enderror" name="no_telpon" value="{{old('no_telpon')}}" id="no_telpon" placeholder="Masukan No Telpon / WA">
+                                @error('no_telpon')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
                             <label for="role_id">Role <span class="text-danger">*</span></label>
                             <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role_id" required>
                                 <option value="">-- Pilih Role --</option>

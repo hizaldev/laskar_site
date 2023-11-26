@@ -81,6 +81,8 @@
                         'master_jenjang_jabatan-list',
                         'master_grade-list',
                         'master_department-list',
+                        'master_jenis_document-list',
+                        'master_properties_document-list',
                        
                     ])): ?>
                         <li class="nav-item dropdown">
@@ -130,6 +132,12 @@
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_pendidikan_terakhir-list')): ?>
                                     <a class="dropdown-item" href="<?php echo e(route('last_educations.index')); ?>">Pendidikan Terakhir</a>
                                 <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_jenis_document-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('jenis_documents.index')); ?>">Jenis Dokumen</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_properties_document-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('properties_documents.index')); ?>">Sifat Dokumen</a>
+                                <?php endif; ?>
                             </div>
                             
                         </li>
@@ -160,6 +168,9 @@
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
                         'aplikasi_absensi-list',
                         'aplikasi_absensi-list-user',
+                        'aplikasi_dokumen-list',
+                        'aplikasi_dokumen-list-user',
+                        'aplikasi_pencarian_dokumen-list',
                     ])): ?>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -171,6 +182,15 @@
                                     'aplikasi_absensi-list-user',
                                 ])): ?>
                                     <a class="dropdown-item" href="<?php echo e(route('attendances.index')); ?>">Absensi</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any([
+                                    'aplikasi_dokumen-list',
+                                    'aplikasi_dokumen-list-user',
+                                ])): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('documents.index')); ?>">Management Dokumen Laskar</a>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('aplikasi_pencarian_dokumen-list')): ?>
+                                    <a class="dropdown-item" href="<?php echo e(route('search_documents.index')); ?>">Pencarian Dokumen Laskar</a>
                                 <?php endif; ?>
                             </div>
 

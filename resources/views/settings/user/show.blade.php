@@ -38,7 +38,7 @@
                                                 <h1 class="modal-title fs-6" id="exampleModalLabel">Edit Informasi Profile</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ route('users.update', $item->id)}}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ route('users.update_profile_anggota', $item->id)}}" method="POST" enctype="multipart/form-data">
                                                 @method('PUT')
                                                 @csrf
                                             <div class="modal-body">
@@ -341,7 +341,7 @@
                                                             <h1 class="modal-title fs-6" id="exampleModalLabel">Edit Informasi Keanggotaan</h1>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <form action="{{ route('users.update', $item->id)}}" method="POST" enctype="multipart/form-data">
+                                                        <form action="{{ route('users.update_profile_anggota', $item->id)}}" method="POST" enctype="multipart/form-data">
                                                             @method('PUT')
                                                             @csrf
                                                         <div class="modal-body">

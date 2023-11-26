@@ -39,7 +39,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -64,6 +64,8 @@ return [
             'bucket' => env('DO_SPACES_BUCKET'),
             'endpoint' => env('DO_SPACES_ENDPOINT'),
             'url' => env('DO_URL'),
+            'visibility' => 'public',
+            'bucket_endpoint' => true,
         ],
 
     ],

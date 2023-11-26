@@ -32,6 +32,99 @@ class NewsController extends Controller
         }
     }
 
+    public function getDataNewsAllEvent(Request $request)
+    {
+        $keyword = 'Event';
+        $news = News::with(['documentation'])
+            ->orderBy('created_at', 'desc')
+            ->where('kategori_berita_id', 'like', '%Event%')
+            ->limit(30)
+            ->get();
+        // dd($news);
+        if ($news) {
+            return ResponseFormatter::success(
+                $news,
+                'Data transaksi berhasil diambil'
+            );
+        } else {
+            return ResponseFormatter::error(
+                null,
+                'Data transaksi gagal diambil',
+                404
+            );
+        }
+    }
+
+    public function getDataNewsBanner(Request $request)
+    {
+        $keyword = 'Event';
+        $news = News::with(['documentation'])
+            ->orderBy('created_at', 'desc')
+            ->where('kategori_berita_id', 'like', '%Banner%')
+            ->limit(5)
+            ->get();
+        // dd($news);
+        if ($news) {
+            return ResponseFormatter::success(
+                $news,
+                'Data transaksi berhasil diambil'
+            );
+        } else {
+            return ResponseFormatter::error(
+                null,
+                'Data transaksi gagal diambil',
+                404
+            );
+        }
+    }
+
+    public function getDataNews(Request $request)
+    {
+        $keyword = 'Event';
+        $news = News::with(['documentation'])
+            ->orderBy('created_at', 'desc')
+            ->where('kategori_berita_id', 'like', '%News%')
+            ->limit(5)
+            ->get();
+        // dd($news);
+        if ($news) {
+            return ResponseFormatter::success(
+                $news,
+                'Data transaksi berhasil diambil'
+            );
+        } else {
+            return ResponseFormatter::error(
+                null,
+                'Data transaksi gagal diambil',
+                404
+            );
+        }
+    }
+
+    public function getDataAllNews(Request $request)
+    {
+        $keyword = 'Event';
+        $news = News::with(['documentation'])
+            ->orderBy('created_at', 'desc')
+            ->where('kategori_berita_id', 'like', '%News%')
+            ->limit(30)
+            ->get();
+        // dd($news);
+        if ($news) {
+            return ResponseFormatter::success(
+                $news,
+                'Data transaksi berhasil diambil'
+            );
+        } else {
+            return ResponseFormatter::error(
+                null,
+                'Data transaksi gagal diambil',
+                404
+            );
+        }
+    }
+
+
     public function getDataNewsDetail(Request $request)
     {
         $id = $request->input('id');

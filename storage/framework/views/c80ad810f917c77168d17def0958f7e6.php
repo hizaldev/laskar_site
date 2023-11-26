@@ -39,6 +39,9 @@
                                         <th> 
                                             <input type="text" class="form-control filter-input form-control-sm" placeholder="Search Status" data-column="11">
                                         </th>
+                                        <th> 
+                                            
+                                        </th>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('keanggotaan_anggota-print')): ?>
                                             <th class="py-2"></th>
                                         <?php endif; ?>
@@ -64,6 +67,7 @@
                                         <th class="py-2">DPC</th>
                                         
                                         <th class="py-2">Status</th>
+                                        <th class="py-2">Info Serikat</th>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('keanggotaan_anggota-print')): ?>
                                             <th class="py-2"></th>
                                         <?php endif; ?>
@@ -132,6 +136,7 @@
                 // {data: 'created_at', name: 'created_at', defaultContent: ""},
                 // {data: 'tgl_pendaftaran', name: 'tgl_pendaftaran', defaultContent: ""},
                 {data: 'status.status', name: 'status.status'},
+                {data: 'serikat', name: 'serikat'},
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('keanggotaan_anggota-print')): ?>
                     {
                         data: 'print', 

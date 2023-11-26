@@ -184,6 +184,11 @@ class UserController extends Controller
         //     ]);
         // }
 
+        $this->validate($request, [
+            'email' => 'required',
+            'role_id' => 'required',
+        ]);
+
 
         try {
             // if ($request->type == 'personal') {
@@ -194,8 +199,10 @@ class UserController extends Controller
             //     $data['alamat'] = $request->alamat;
             //     $data['agama'] = $request->agama;
             //     $data['tempat_lahir'] = $request->tempat_lahir;
-            //     $data['no_telpon'] = $request->no_telpon;
-            //     $data['email'] = $request->email;
+            $dataMember['no_telpon'] = $request->no_telpon;
+            $email = $request->email;
+            $dataMember['email'] = $email;
+            $data['email'] = $email;
             //     $data['nipeg'] = $request->nipeg;
             //     $data['grade'] = $request->grade;
             //     $data['tgl_lahir'] = $request->tgl_lahir;
@@ -207,13 +214,15 @@ class UserController extends Controller
             //     $data['size_id'] = $reqx
 
             $item = User::findOrFail($id);
-            // $item->update($data);
+            $item->update($data);
             $item->assignRole([$request->role_id]);
+            $itemMember = Member::findOrFail($item->user_id);
+            $itemMember->update($dataMember);
 
             ConstantController::logger($item->getOriginal(), $this->route . '.update', 'update success');
             ConstantController::successAlert();
         } catch (Exception $e) {
-            ConstantController::logger($item->getMessage(), $this->route . '.update', 'update error');
+            ConstantController::logger($e->getMessage(), $this->route . '.update', 'update error');
             ConstantController::errorAlert($e->getMessage());
         }
 
@@ -278,11 +287,25 @@ class UserController extends Controller
 
             $item = Member::findOrFail($id);
             $item->update($data);
+            if ($request->type == 'personal') {
+                $dataUser['name'] = $request->nama_lengkap;
+                $dataUser['email'] = $request->email;
+                $dataUser['nipeg'] = $request->nipeg;
+                $dataUser['unit_id'] = $request->unit_id;
+                $dataUser['alamat'] = $request->alamat;
+                $item = User::where('user_id', $id)->firstOrFail();
+                $item->update($dataUser);
+            } else {
+                $dataUser['dpd_id'] = $request->dpd_id;
+                $dataUser['dpc_id'] = $request->dpc_id;
+                $item = User::where('user_id', $id)->firstOrFail();
+                $item->update($dataUser);
+            }
 
             ConstantController::logger($item->getOriginal(), $this->route . '.update', 'update success');
             ConstantController::successAlert();
         } catch (Exception $e) {
-            ConstantController::logger($item->getMessage(), $this->route . '.update', 'update error');
+            ConstantController::logger($e->getMessage(), $this->route . '.update', 'update error');
             ConstantController::errorAlert($e->getMessage());
         }
 

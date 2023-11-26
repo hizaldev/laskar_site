@@ -81,6 +81,8 @@
                         'master_jenjang_jabatan-list',
                         'master_grade-list',
                         'master_department-list',
+                        'master_jenis_document-list',
+                        'master_properties_document-list',
                        
                     ])
                         <li class="nav-item dropdown">
@@ -130,6 +132,12 @@
                                 @can('master_pendidikan_terakhir-list')
                                     <a class="dropdown-item" href="{{ route('last_educations.index') }}">Pendidikan Terakhir</a>
                                 @endcan
+                                @can('master_jenis_document-list')
+                                    <a class="dropdown-item" href="{{ route('jenis_documents.index') }}">Jenis Dokumen</a>
+                                @endcan
+                                @can('master_properties_document-list')
+                                    <a class="dropdown-item" href="{{ route('properties_documents.index') }}">Sifat Dokumen</a>
+                                @endcan
                             </div>
                             
                         </li>
@@ -160,6 +168,9 @@
                     @canany([
                         'aplikasi_absensi-list',
                         'aplikasi_absensi-list-user',
+                        'aplikasi_dokumen-list',
+                        'aplikasi_dokumen-list-user',
+                        'aplikasi_pencarian_dokumen-list',
                     ])
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -171,6 +182,15 @@
                                     'aplikasi_absensi-list-user',
                                 ])
                                     <a class="dropdown-item" href="{{ route('attendances.index') }}">Absensi</a>
+                                @endcan
+                                @canany([
+                                    'aplikasi_dokumen-list',
+                                    'aplikasi_dokumen-list-user',
+                                ])
+                                    <a class="dropdown-item" href="{{ route('documents.index') }}">Management Dokumen Laskar</a>
+                                @endcan
+                                @can('aplikasi_pencarian_dokumen-list')
+                                    <a class="dropdown-item" href="{{ route('search_documents.index') }}">Pencarian Dokumen Laskar</a>
                                 @endcan
                             </div>
 

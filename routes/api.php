@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AbsensiController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\DokumenController;
 use App\Http\Controllers\API\master\BankController;
 use App\Http\Controllers\API\master\DpcController;
 use App\Http\Controllers\API\master\DpdController;
@@ -45,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('getDataKehadiranUser', [AbsensiController::class, 'getDataKehadiranUser']);
     Route::post('showAbsensiScan', [AbsensiController::class, 'showAbsensiScan']);
     Route::get('printAbsensi', [AbsensiController::class, 'printAbsensi']);
+    Route::get('getDataSearchAbsensi', [AbsensiController::class, 'getDataSearchAbsensi']);
 
     // Statistik
     Route::get('getDataStatistikAnggota', [StatistikController::class, 'getDataStatistikAnggota']);
@@ -62,5 +64,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // news
     Route::get('getDataNewsEvent', [NewsController::class, 'getDataNewsEvent']);
+    Route::get('getDataNewsAllEvent', [NewsController::class, 'getDataNewsAllEvent']);
+    Route::get('getDataNewsBanner', [NewsController::class, 'getDataNewsBanner']);
     Route::post('getDataNewsDetail', [NewsController::class, 'getDataNewsDetail']);
+    Route::get('getDataNews', [NewsController::class, 'getDataNews']);
+    Route::get('getDataAllNews', [NewsController::class, 'getDataAllNews']);
+
+    // dokumen
+    Route::get('getDataDokumenUser', [DokumenController::class, 'getDataDokumenUser']);
+    Route::post('getDataDokumenDetail', [DokumenController::class, 'getDataDokumenDetail']);
+    Route::post('getDataPencarianDokumen', [DokumenController::class, 'getDataPencarianDokumen']);
 });

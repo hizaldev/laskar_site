@@ -35,10 +35,10 @@ class AbsensiController extends Controller
     public function index(Request $request)
     {
         $user = User::find(Auth::user()->id);
-        $data = Attendance::when($user->can('aplikasi_absensi-list-user'), function ($query, $user) {
-            return $query->where('user_id', $user->user_id);
-        })
-            ->get();
+        $data = Attendance::get();
+        if ($user->can('aplikasi_absensi-list-user')) {
+            $data->where('user_id', $user->user_id);
+        }
 
         if (request()->ajax()) {
             return DataTables::of($data)
@@ -281,6 +281,8 @@ class AbsensiController extends Controller
     {
         $item = Attendance::findOrFail($id);
         $item->delete();
+        $itemDetail = AttendanceDetail::firstOrFail('attendance_id', $id);
+        $itemDetail->delete();
         ConstantController::logger($item->getOriginal(), $this->route . '.delete', 'delete success');
         ConstantController::successDeleteAlert();
         return redirect()->route($this->route . '.index');

@@ -36,7 +36,7 @@
                                                 <h1 class="modal-title fs-6" id="exampleModalLabel">Edit Informasi Profile</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="<?php echo e(route('users.update', $item->id)); ?>" method="POST" enctype="multipart/form-data">
+                                            <form action="<?php echo e(route('users.update_profile_anggota', $item->id)); ?>" method="POST" enctype="multipart/form-data">
                                                 <?php echo method_field('PUT'); ?>
                                                 <?php echo csrf_field(); ?>
                                             <div class="modal-body">
@@ -521,7 +521,7 @@ unset($__errorArgs, $__bag); ?>
                                                             <h1 class="modal-title fs-6" id="exampleModalLabel">Edit Informasi Keanggotaan</h1>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <form action="<?php echo e(route('users.update', $item->id)); ?>" method="POST" enctype="multipart/form-data">
+                                                        <form action="<?php echo e(route('users.update_profile_anggota', $item->id)); ?>" method="POST" enctype="multipart/form-data">
                                                             <?php echo method_field('PUT'); ?>
                                                             <?php echo csrf_field(); ?>
                                                         <div class="modal-body">
